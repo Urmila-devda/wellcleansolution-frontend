@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import Hero from "../components/Hero"
-import Categories from "../components/Categories"
 import BestSellers from "../components/BestSellers"
 import WhyChooseUs from "../components/WhyChooseUs"
 import Testimonials from "../components/Testimonials"
@@ -11,8 +10,7 @@ import { getProductImage, getImageUrl } from "../utils/imageMapper"
 
 export default function Home({ 
   onAddToCart, 
-  onQuickView, 
-  setSelectedCategory: propSetSelectedCategory 
+  onQuickView 
 }) {
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -57,7 +55,6 @@ export default function Home({
   return (
     <div>
       <Hero />
-      <Categories onSelectCategory={propSetSelectedCategory} />
       
       {isLoading ? (
         <div className="py-20 flex flex-col items-center justify-center font-sans">
