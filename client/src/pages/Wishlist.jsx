@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
-import { getProductImage } from "../utils/imageMapper"
+import { getProductImage, getImageUrl } from "../utils/imageMapper"
 import { FiHeart, FiTrash2, FiShoppingCart } from "react-icons/fi"
 import { CATALOG_MODE } from "../config"
 
@@ -45,7 +45,7 @@ export default function Wishlist() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {wishlist.map((product) => {
               const productId = product._id || product.id
-              const imgUrl = product.image || getProductImage(product.imageKey)
+              const imgUrl = product.images?.[0] ? getImageUrl(product.images[0]) : (product.image || getProductImage(product.imageKey))
               
               return (
                 <div

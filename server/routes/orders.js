@@ -50,7 +50,7 @@ router.post("/", protect, async (req, res) => {
         name: product.name,
         price: product.price,
         quantity: item.quantity,
-        image: product.imageKey,
+        image: product.images?.[0] || product.imageKey,
       })
 
       // Deduct stock levels

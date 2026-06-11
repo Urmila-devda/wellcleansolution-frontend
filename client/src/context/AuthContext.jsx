@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from "react"
 import { authAPI, cartAPI, setAuthToken } from "../services/api"
 import { io } from "socket.io-client"
+import { CATALOG_MODE } from "../config"
+
 
 const AuthContext = createContext(null)
 
@@ -70,7 +72,7 @@ export const AuthProvider = ({ children }) => {
             price: item.product.price,
             category: item.product.category,
             description: item.product.description,
-            image: item.product.imageKey, // frontend will map this key
+            image: item.product.images?.[0] || item.product.imageKey, // frontend will map this key
             quantity: item.quantity,
             product: item.product, // keep reference
           }))
@@ -126,7 +128,7 @@ export const AuthProvider = ({ children }) => {
         price: item.product.price,
         category: item.product.category,
         description: item.product.description,
-        image: item.product.imageKey,
+        image: item.product.images?.[0] || item.product.imageKey,
         quantity: item.quantity,
         product: item.product,
       }))
@@ -173,6 +175,10 @@ export const AuthProvider = ({ children }) => {
 
   // Cart Operations (only allow if logged in, otherwise show toast/modal)
   const handleAddToCart = (product, quantity = 1) => {
+    if (CATALOG_MODE) {
+      showToast("Online ordering will be available shortly.", "warning")
+      return false
+    }
     if (!token) {
       showToast("Please login to continue shopping", "warning")
       return false // Indicates failure to caller (so it can open LoginModal)
@@ -197,7 +203,7 @@ export const AuthProvider = ({ children }) => {
             price: product.price,
             category: product.category,
             description: product.description,
-            image: product.imageKey || product.image,
+            image: product.images?.[0] || product.imageKey || product.image,
             quantity: quantity,
             product: product,
           },
@@ -258,6 +264,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   const moveToCart = (product) => {
+    if (CATALOG_MODE) {
+      showToast("Online ordering will be available shortly.", "warning")
+      return
+    }
     const success = handleAddToCart(product, 1)
     if (success) {
       const productId = product._id || product.id

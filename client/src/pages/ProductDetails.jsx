@@ -294,7 +294,7 @@ export default function ProductDetails({ onAddToCart }) {
                   {/* Notice Banner */}
                   <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-3.5 text-xs font-bold flex items-center gap-2 shadow-sm">
                     <span>📢</span>
-                    <span>Online ordering will be available shortly. Feel free to contact us or enquire via WhatsApp.</span>
+                    <span>Online ordering will be available shortly.</span>
                   </div>
 
                   {/* Action Buttons */}
@@ -314,12 +314,13 @@ export default function ProductDetails({ onAddToCart }) {
                     {/* Request Quote Button */}
                     <button
                       onClick={() => {
-                        const contactSection = document.getElementById("contact-us")
-                        if (contactSection) {
-                          contactSection.scrollIntoView({ behavior: "smooth" })
-                        } else {
-                          window.location.href = `/?scrollToContact=true&prefillSubject=${encodeURIComponent(`Quote request for ${product.name}`)}`
-                        }
+                        navigate("/", {
+                          state: {
+                            scrollToContact: true,
+                            prefillSubject: `Quote request for ${product.name}`,
+                            prefillMessage: `Hi, I would like to request a price quote for ${product.name} (Price: ₹${product.price.toFixed(2)}). Please contact me with more information.`
+                          }
+                        })
                       }}
                       className="flex-1 py-3 bg-brand-blue hover:bg-brand-blue-hover text-white rounded-xl font-bold transition-all shadow-md text-xs cursor-pointer"
                     >
@@ -329,12 +330,13 @@ export default function ProductDetails({ onAddToCart }) {
                     {/* Contact Us Button */}
                     <button
                       onClick={() => {
-                        const contactSection = document.getElementById("contact-us")
-                        if (contactSection) {
-                          contactSection.scrollIntoView({ behavior: "smooth" })
-                        } else {
-                          window.location.href = "/?scrollToContact=true"
-                        }
+                        navigate("/", {
+                          state: {
+                            scrollToContact: true,
+                            prefillSubject: `Inquiry about ${product.name}`,
+                            prefillMessage: `Hi, I have a question regarding ${product.name}. Please contact me.`
+                          }
+                        })
                       }}
                       className="flex-1 py-3 border border-slate-200 hover:border-brand-blue hover:text-brand-blue text-slate-600 rounded-xl font-bold transition-all text-xs cursor-pointer"
                     >
@@ -348,7 +350,7 @@ export default function ProductDetails({ onAddToCart }) {
                   {/* Quantity Counter */}
                   <div className="flex items-center border border-slate-200 rounded-full py-2 px-4 bg-slate-50 shadow-inner">
                     <button
-                      onClick={() => setQty(Math.max(1, qty - 1))}
+                      onClick={handleDecrement}
                       className="p-1 text-slate-500 hover:text-brand-blue transition-colors"
                       title="Decrease Quantity"
                     >
@@ -356,7 +358,7 @@ export default function ProductDetails({ onAddToCart }) {
                     </button>
                     <span className="px-5 text-sm font-extrabold text-slate-800 min-w-8 text-center">{qty}</span>
                     <button
-                      onClick={() => setQty(qty + 1)}
+                      onClick={handleIncrement}
                       className="p-1 text-slate-500 hover:text-brand-blue transition-colors"
                       title="Increase Quantity"
                     >

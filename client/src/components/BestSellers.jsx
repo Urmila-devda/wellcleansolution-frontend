@@ -72,7 +72,7 @@ export default function BestSellers({
         {CATALOG_MODE && (
           <div className="bg-amber-50 border border-amber-200 text-amber-805 rounded-xl p-3.5 text-xs font-bold text-center max-w-xl mx-auto mb-8 shadow-sm flex items-center justify-center gap-2">
             <span>📢</span>
-            <span>Online ordering will be available shortly. Feel free to contact us or enquire via WhatsApp.</span>
+            <span>Online ordering will be available shortly.</span>
           </div>
         )}
 

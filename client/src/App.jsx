@@ -29,7 +29,16 @@ function AppContent() {
         <Route path="/" element={<UserRouteWrapper Component={Home} />} />
         <Route path="/products" element={<UserRouteWrapper Component={Products} />} />
         <Route path="/products/:id" element={<UserRouteWrapper Component={ProductDetails} />} />
-        <Route path="/cart" element={<UserRouteWrapper Component={Home} />} />
+        <Route
+          path="/cart"
+          element={
+            CATALOG_MODE ? (
+              <Navigate to="/" replace />
+            ) : (
+              <UserRouteWrapper Component={Home} />
+            )
+          }
+        />
         <Route path="/login" element={<UserRouteWrapper Component={Home} />} />
         <Route path="/register" element={<UserRouteWrapper Component={Home} />} />
         <Route path="/wishlist" element={<UserRouteWrapper Component={Wishlist} />} />

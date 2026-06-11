@@ -8,6 +8,10 @@ import LoginModal from "../components/LoginModal"
 import QuickViewModal from "../components/QuickViewModal"
 import ToastContainer from "../components/Toast"
 import { useAuth } from "../context/AuthContext"
+import { productsAPI } from "../services/api"
+import { getProductImage, getImageUrl } from "../utils/imageMapper"
+import { CATALOG_MODE } from "../config"
+
 
 // Static products dataset (for search modal fallback)
 import handwashImg from "../assets/handwash.png"
@@ -32,6 +36,31 @@ export default function UserLayout() {
   const navigate = useNavigate()
   
   const [selectedCategory, setSelectedCategory] = useState("All")
+  const [products, setProducts] = useState([])
+
+  // Fetch products for SearchModal dynamically
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await productsAPI.getAll()
+        const formatted = data.map((prod) => ({
+          ...prod,
+          id: prod._id,
+          image: prod.images?.[0] ? getImageUrl(prod.images[0]) : getProductImage(prod.imageKey),
+        }))
+        setProducts(formatted)
+      } catch (error) {
+        console.error("Failed to load products in UserLayout:", error)
+        // Fallback to static products if API fails
+        const formattedStatic = staticProducts.map((prod) => ({
+          ...prod,
+          image: prod.image,
+        }))
+        setProducts(formattedStatic)
+      }
+    }
+    fetchProducts()
+  }, [])
 
   // Modals visibility states
   const [isCartOpen, setIsCartOpen] = useState(false)
@@ -57,7 +86,11 @@ export default function UserLayout() {
     if (location.pathname === "/login" || location.pathname === "/register") {
       setIsLoginOpen(true)
     } else if (location.pathname === "/cart") {
-      setIsCartOpen(true)
+      if (CATALOG_MODE) {
+        navigate("/", { replace: true })
+      } else {
+        setIsCartOpen(true)
+      }
     }
   }, [location.pathname])
 
@@ -125,7 +158,7 @@ export default function UserLayout() {
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
-        products={staticProducts}
+        products={products}
         onQuickView={handleQuickView}
       />
 

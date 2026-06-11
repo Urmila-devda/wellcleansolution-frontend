@@ -4,7 +4,7 @@ import { FiSearch, FiStar, FiShoppingBag, FiEye, FiHeart, FiSliders, FiChevronLe
 import { useAuth } from "../context/AuthContext"
 import { CATALOG_MODE } from "../config"
 import { productsAPI } from "../services/api"
-import { getProductImage } from "../utils/imageMapper"
+import { getProductImage, getImageUrl } from "../utils/imageMapper"
 
 export default function Products({
   onAddToCart,
@@ -50,7 +50,7 @@ export default function Products({
         const formatted = data.map((prod) => ({
           ...prod,
           id: prod._id,
-          image: getProductImage(prod.imageKey),
+          image: prod.images?.[0] ? getImageUrl(prod.images[0]) : getProductImage(prod.imageKey),
         }))
         setProducts(formatted)
       } catch (error) {
@@ -259,7 +259,7 @@ export default function Products({
             {CATALOG_MODE && (
               <div className="bg-amber-50 border border-amber-200 text-amber-805 rounded-xl p-3.5 text-xs font-bold text-center w-full shadow-sm flex items-center justify-center gap-2 mb-6">
                 <span>📢</span>
-                <span>Online ordering will be available shortly. Feel free to contact us or enquire via WhatsApp.</span>
+                <span>Online ordering will be available shortly.</span>
               </div>
             )}
 
@@ -333,7 +333,7 @@ export default function Products({
                           >
                             <FiEye className="text-sm" />
                           </button>
-                          {isAuthenticated && (
+                          {!CATALOG_MODE && isAuthenticated && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation()

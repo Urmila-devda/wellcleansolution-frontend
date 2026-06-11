@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { ordersAPI, productsAPI, enquiriesAPI } from "../services/api"
-import { getProductImage, getImageUrl } from "../utils/imageMapper"
+import { getImageUrl } from "../utils/imageMapper"
 import { useAuth } from "../context/AuthContext"
 import {
   FiBriefcase,

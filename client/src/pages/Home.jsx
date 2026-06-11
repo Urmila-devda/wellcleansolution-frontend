@@ -7,7 +7,7 @@ import Testimonials from "../components/Testimonials"
 import AboutUs from "../components/AboutUs"
 import ContactSection from "../components/ContactSection"
 import { productsAPI } from "../services/api"
-import { getProductImage } from "../utils/imageMapper"
+import { getProductImage, getImageUrl } from "../utils/imageMapper"
 
 export default function Home({ 
   onAddToCart, 
@@ -40,7 +40,7 @@ export default function Home({
         const formatted = data.map((prod) => ({
           ...prod,
           id: prod._id, // match React UI standard (id instead of _id)
-          image: getProductImage(prod.imageKey),
+          image: prod.images?.[0] ? getImageUrl(prod.images[0]) : getProductImage(prod.imageKey),
         }))
 
         setProducts(formatted)

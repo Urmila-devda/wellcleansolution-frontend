@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiX, FiStar, FiPlus, FiMinus, FiShoppingBag, FiShield, FiHeart } from 'react-icons/fi';
 import { CATALOG_MODE } from '../config';
 
+
 export default function QuickViewModal({ isOpen, onClose, product, onAddToCart }) {
+  const navigate = useNavigate();
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
 
@@ -112,34 +115,54 @@ export default function QuickViewModal({ isOpen, onClose, product, onAddToCart }
             <div className="space-y-4 pt-4 border-t border-slate-100">
               {CATALOG_MODE ? (
                 <div className="space-y-3">
-                  <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-2.5 text-[10px] font-bold text-center flex items-center justify-center gap-1.5 shadow-sm">
+                  <div className="bg-amber-50 border border-amber-200 text-amber-805 rounded-xl p-2.5 text-[10px] font-bold text-center flex items-center justify-center gap-1.5 shadow-sm">
                     <span>📢</span>
                     <span>Online ordering will be available shortly.</span>
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2 w-full">
+                    {/* WhatsApp Enquiry Button */}
                     <a
                       href={`https://wa.me/917021204733?text=${encodeURIComponent(
                         `Hi, I'm interested in the product: ${product.name} (Price: ₹${product.price.toFixed(2)}). Could you please provide more details?`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 py-2.5 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-full font-bold transition-all shadow-md flex items-center justify-center gap-1.5 text-xs text-center border border-transparent"
+                      className="flex-1 py-2.5 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-xl font-bold transition-all shadow-md flex items-center justify-center gap-1.5 text-xs text-center border border-transparent cursor-pointer"
                     >
                       <span>WhatsApp Enquiry</span>
                     </a>
 
+                    {/* Request Quote Button */}
                     <button
                       onClick={() => {
                         onClose();
-                        const contactSection = document.getElementById("contact-us");
-                        if (contactSection) {
-                          contactSection.scrollIntoView({ behavior: "smooth" });
-                        } else {
-                          window.location.href = `/?scrollToContact=true&prefillSubject=${encodeURIComponent(`Quote request for ${product.name}`)}`;
-                        }
+                        navigate("/", {
+                          state: {
+                            scrollToContact: true,
+                            prefillSubject: `Quote request for ${product.name}`,
+                            prefillMessage: `Hi, I would like to request a price quote for ${product.name} (Price: ₹${product.price.toFixed(2)}). Please contact me with more information.`
+                          }
+                        });
                       }}
-                      className="flex-1 py-2.5 bg-brand-blue hover:bg-brand-blue-hover text-white rounded-full font-bold transition-all shadow-md text-xs cursor-pointer"
+                      className="flex-1 py-2.5 bg-brand-blue hover:bg-brand-blue-hover text-white rounded-xl font-bold transition-all shadow-md text-xs cursor-pointer"
+                    >
+                      Request Quote
+                    </button>
+
+                    {/* Contact Us Button */}
+                    <button
+                      onClick={() => {
+                        onClose();
+                        navigate("/", {
+                          state: {
+                            scrollToContact: true,
+                            prefillSubject: `Inquiry about ${product.name}`,
+                            prefillMessage: `Hi, I have a question regarding ${product.name}. Please contact me.`
+                          }
+                        });
+                      }}
+                      className="flex-1 py-2.5 border border-slate-200 hover:border-brand-blue hover:text-brand-blue text-slate-600 rounded-xl font-bold transition-all text-xs cursor-pointer"
                     >
                       Contact Us
                     </button>

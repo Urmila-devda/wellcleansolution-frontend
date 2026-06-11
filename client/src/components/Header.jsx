@@ -55,6 +55,12 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
           isScrolled ? "glassmorphism shadow-md py-3" : "bg-white/90 border-b border-slate-100 py-4"
         }`}
       >
+        {CATALOG_MODE && (
+          <div className="bg-amber-500 text-white text-center py-1.5 px-4 text-[11px] font-bold w-full tracking-wide shadow-sm flex items-center justify-center gap-1.5 animate-pulse-subtle">
+            <span>📢</span>
+            <span>Online ordering will be available shortly.</span>
+          </div>
+        )}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
           {/* Logo */}
@@ -295,7 +301,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
         )}
       </header>
       {/* Spacer to push elements down */}
-      <div className="h-[72px]" />
+      <div className={CATALOG_MODE ? "h-[104px]" : "h-[72px]"} />
     </>
   )
 }
