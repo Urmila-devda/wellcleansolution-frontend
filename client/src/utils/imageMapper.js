@@ -4,6 +4,7 @@ import glassImg from "../assets/glass_cleaner.png"
 import floorImg from "../assets/floor_cleaner.png"
 import dishwashImg from "../assets/dishwash.png"
 import surfaceImg from "../assets/multi_surface.png"
+import { API_BASE_URL } from "../config"
 
 export const productImages = {
   handwash: handwashImg,
@@ -30,7 +31,7 @@ export const getImageUrl = (imagePath) => {
   }
 
   if (imagePath.startsWith("/")) {
-    return `http://localhost:5000${imagePath}`
+    return `${API_BASE_URL}${imagePath}`
   }
 
   if (productImages[imagePath]) {
@@ -38,7 +39,7 @@ export const getImageUrl = (imagePath) => {
   }
 
   // Fallback case: assume it is a local upload path without leading slash
-  return `http://localhost:5000/uploads/${imagePath}`
+  return `${API_BASE_URL}/uploads/${imagePath}`
 }
 
 export const getProductImage = (key) => {

@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react"
 import { authAPI, cartAPI, setAuthToken } from "../services/api"
 import { io } from "socket.io-client"
-import { CATALOG_MODE } from "../config"
+import { CATALOG_MODE, API_BASE_URL } from "../config"
 
 
 const AuthContext = createContext(null)
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     let newSocket
     if (user && user._id) {
-      newSocket = io("http://localhost:5000")
+      newSocket = io(API_BASE_URL)
       setSocket(newSocket)
 
       newSocket.on("connect", () => {
