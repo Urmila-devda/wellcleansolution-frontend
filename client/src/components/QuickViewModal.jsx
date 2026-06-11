@@ -54,7 +54,14 @@ export default function QuickViewModal({ isOpen, onClose, product, onAddToCart }
           {/* Right Column: Info Area */}
           <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
             <div>
-              <span className="text-xs font-bold text-brand-blue uppercase tracking-wider">{product.category}</span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold text-brand-blue uppercase tracking-wider">{product.category}</span>
+                {product.size && (
+                  <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                    {product.size}
+                  </span>
+                )}
+              </div>
               <h3 className="text-2xl font-bold text-slate-800 mt-1 mb-2 leading-tight">{product.name}</h3>
               
               {/* Rating */}

@@ -180,10 +180,17 @@ export default function BestSellers({
               {/* Product Info */}
               <div className="p-2.5 sm:p-3 flex flex-col flex-grow justify-between space-y-2">
                 <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[8px] font-extrabold text-slate-400 uppercase tracking-widest">{product.category}</span>
+                  <div className="flex items-center justify-between gap-1">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="text-[8px] font-extrabold text-slate-400 uppercase tracking-widest truncate">{product.category}</span>
+                      {product.size && (
+                        <span className="text-[8px] font-extrabold text-slate-500 bg-slate-100 px-1 rounded flex-shrink-0">
+                          {product.size}
+                        </span>
+                      )}
+                    </div>
                     {/* Rating Pill */}
-                    <div className="flex items-center gap-0.5 bg-amber-50 px-1 py-0.5 rounded text-[9px] text-amber-700 font-bold border border-amber-100">
+                    <div className="flex items-center gap-0.5 bg-amber-50 px-1 py-0.5 rounded text-[9px] text-amber-700 font-bold border border-amber-100 flex-shrink-0">
                       <FiStar className="text-[9px] text-amber-500 fill-amber-500" />
                       <span>{product.rating}</span>
                     </div>

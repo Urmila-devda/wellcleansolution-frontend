@@ -72,13 +72,24 @@ router.get("/:id", async (req, res) => {
   }
 })
 
+const inferCategory = (name) => {
+  if (!name) return "Surface Cleaner"
+  const n = name.toLowerCase()
+  if (n.includes("hand") || n.includes("wash")) return "Hand Wash"
+  if (n.includes("toilet")) return "Toilet Cleaner"
+  if (n.includes("glass")) return "Glass Cleaner"
+  if (n.includes("floor")) return "Floor Cleaner"
+  if (n.includes("dish")) return "Dish Wash Liquid"
+  return "Surface Cleaner"
+}
+
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
 router.post("/", protect, isAdmin, async (req, res) => {
-  const { name, category, description, details, price, images, tag, stock, specs, ingredients } = req.body
+  const { name, description, details, price, images, tag, stock, specs, ingredients, size } = req.body
 
-  if (!name || !category || !description || !details || price === undefined || stock === undefined) {
+  if (!name || !description || !details || price === undefined || stock === undefined) {
     return res.status(400).json({ message: "Missing required fields" })
   }
 
@@ -87,6 +98,7 @@ router.post("/", protect, isAdmin, async (req, res) => {
   }
 
   try {
+    const category = inferCategory(name)
     const product = new Product({
       name,
       category,
@@ -99,6 +111,7 @@ router.post("/", protect, isAdmin, async (req, res) => {
       stock,
       specs: specs || [],
       ingredients,
+      size: size || "1 Litre",
     })
 
     const createdProduct = await product.save()
@@ -113,7 +126,7 @@ router.post("/", protect, isAdmin, async (req, res) => {
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 router.put("/:id", protect, isAdmin, async (req, res) => {
-  const { name, category, description, details, price, images, tag, stock, specs, ingredients } = req.body
+  const { name, description, details, price, images, tag, stock, specs, ingredients, size } = req.body
 
   try {
     const product = await Product.findById(req.params.id)
@@ -137,7 +150,9 @@ router.put("/:id", protect, isAdmin, async (req, res) => {
       }
 
       product.name = name !== undefined ? name : product.name
-      product.category = category !== undefined ? category : product.category
+      if (name !== undefined) {
+        product.category = inferCategory(name)
+      }
       product.description = description !== undefined ? description : product.description
       product.details = details !== undefined ? details : product.details
       product.price = price !== undefined ? price : product.price
@@ -145,6 +160,7 @@ router.put("/:id", protect, isAdmin, async (req, res) => {
       product.stock = stock !== undefined ? stock : product.stock
       product.specs = specs !== undefined ? specs : product.specs
       product.ingredients = ingredients !== undefined ? ingredients : product.ingredients
+      product.size = size !== undefined ? size : product.size
 
       const updatedProduct = await product.save()
       res.json(updatedProduct)

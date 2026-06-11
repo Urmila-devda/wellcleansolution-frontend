@@ -56,6 +56,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    size: {
+      type: String,
+      default: "1 Litre",
+    },
     stock: {
       type: Number,
       required: [true, "Stock level is required"],

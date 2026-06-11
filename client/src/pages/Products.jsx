@@ -350,7 +350,14 @@ export default function Products({
 
                       {/* Product Info */}
                       <div className="p-4 space-y-2">
-                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{product.category}</span>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{product.category}</span>
+                          {product.size && (
+                            <span className="text-[9px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                              {product.size}
+                            </span>
+                          )}
+                        </div>
                         <h3 className="font-bold text-slate-800 text-sm leading-snug group-hover:text-brand-blue transition-colors line-clamp-1">
                           {product.name}
                         </h3>

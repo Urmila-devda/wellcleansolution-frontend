@@ -203,9 +203,16 @@ export default function ProductDetails({ onAddToCart }) {
           <div className="md:w-1/2 flex flex-col justify-between space-y-6">
             
             <div>
-              <span className="text-xs font-black text-brand-blue uppercase tracking-widest bg-brand-soft-blue px-3 py-1 rounded-full">
-                WellCleanSolutions
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-black text-brand-blue uppercase tracking-widest bg-brand-soft-blue px-3 py-1 rounded-full">
+                  WellCleanSolutions
+                </span>
+                {product.size && (
+                  <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                    {product.size}
+                  </span>
+                )}
+              </div>
               
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 mt-3 mb-2 leading-tight">
                 {product.name}
@@ -225,7 +232,7 @@ export default function ProductDetails({ onAddToCart }) {
                 <span className="text-slate-300">|</span>
                 <span className="text-xs font-bold text-brand-green flex items-center gap-1">
                   <FiCheck className="text-sm stroke-[3px]" />
-                  In Stock ({product.stock} units available)
+                  {product.stock > 0 ? "In stock(Available)" : "Out of Stock"}
                 </span>
               </div>
 

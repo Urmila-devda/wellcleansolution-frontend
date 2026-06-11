@@ -74,6 +74,7 @@ export default function AdminDashboard({ activeTab = "overview" }) {
   const [newImagesPreview, setNewImagesPreview] = useState([])
   const [prodTag, setProdTag] = useState("")
   const [prodStock, setProdStock] = useState(50)
+  const [prodSize, setProdSize] = useState("1 Litre")
 
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files)
@@ -211,6 +212,7 @@ export default function AdminDashboard({ activeTab = "overview" }) {
       setNewImagesPreview([])
       setProdTag(prod.tag || "")
       setProdStock(prod.stock)
+      setProdSize(prod.size || "1 Litre")
     } else {
       setProdName("")
       setProdPrice("")
@@ -221,6 +223,7 @@ export default function AdminDashboard({ activeTab = "overview" }) {
       setNewImagesPreview([])
       setProdTag("")
       setProdStock(50)
+      setProdSize("1 Litre")
     }
     setIsProductModalOpen(true)
   }
@@ -269,18 +272,18 @@ export default function AdminDashboard({ activeTab = "overview" }) {
 
       const payload = {
         name: prodName,
-        category: prodCategory,
         description: prodDescription,
         details: prodDetails,
         price,
         images: finalImages,
         tag: prodTag || undefined,
         stock,
-        specs: selectedProduct?.specs || [
-          { name: "Bottle Volume", value: "500 ml" },
+        specs: [
+          { name: "Bottle Volume", value: prodSize },
           { name: "Eco Rating", value: "Bio-certified" },
         ],
         ingredients: selectedProduct?.ingredients || "Water-based natural active enzymes.",
+        size: prodSize,
       }
 
       if (modalMode === "add") {
@@ -825,19 +828,15 @@ export default function AdminDashboard({ activeTab = "overview" }) {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-500">Category</label>
-                  <select
-                    value={prodCategory}
-                    onChange={(e) => setProdCategory(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-brand-blue text-slate-800 font-bold"
-                  >
-                    <option value="Hand Wash">Hand Wash</option>
-                    <option value="Toilet Cleaner">Toilet Cleaner</option>
-                    <option value="Glass Cleaner">Glass Cleaner</option>
-                    <option value="Floor Cleaner">Floor Cleaner</option>
-                    <option value="Dish Wash Liquid">Dish Wash Liquid</option>
-                    <option value="Surface Cleaner">Surface Cleaner</option>
-                  </select>
+                  <label className="text-xs font-semibold text-slate-500">Quantity / Size</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. 5 Litre or 1 Litre"
+                    value={prodSize}
+                    onChange={(e) => setProdSize(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-brand-blue text-slate-800"
+                  />
                 </div>
               </div>
 
