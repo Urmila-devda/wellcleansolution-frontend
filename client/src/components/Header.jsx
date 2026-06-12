@@ -19,7 +19,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      setIsScrolled(window.scrollY > 10)
       setShowScrollTop(window.scrollY > 400)
     }
     window.addEventListener("scroll", handleScroll)
@@ -72,165 +72,101 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 font-sans ${
           isScrolled 
-            ? "glassmorphism shadow-md py-3" 
-            : "bg-white/95 border-b border-slate-100/80 py-4"
+            ? "bg-white/80 backdrop-blur-md border-b border-slate-100 shadow-sm py-2.5" 
+            : "bg-white/95 border-b border-slate-100 py-3.5"
         }`}
       >
         {CATALOG_MODE && (
           <div className="bg-amber-500 text-white text-center py-1.5 px-4 text-[11px] font-bold w-full tracking-wide shadow-sm flex items-center justify-center gap-1.5 animate-pulse-subtle">
             <span>📢</span>
-            <span>Online ordering will be available shortly.</span>
+            <span>Online ordering will be available shortly. Inquiry operations are active.</span>
           </div>
         )}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
           
-          {/* Brand Logo */}
-          <button onClick={handleHomeClick} className="flex items-center gap-2.5 cursor-pointer text-left focus:outline-none">
-            <img src={logoImg} alt="Well Clean Solutions" className="h-10 w-auto object-contain rounded" />
-            <span className="text-xl font-extrabold tracking-tight text-slate-800">
+          {/* Brand Logo & Text */}
+          <button onClick={handleHomeClick} className="flex items-center gap-2.5 cursor-pointer text-left focus:outline-none flex-shrink-0">
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-brand-blue to-brand-green rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-300" />
+              <img src={logoImg} alt="Well Clean Solutions" className="relative h-10 w-auto object-contain rounded-lg border border-slate-100 bg-white" />
+            </div>
+            <span className="text-lg font-black tracking-tight text-slate-800 hidden sm:block">
               Well Clean <span className="text-brand-blue">Solutions</span>
             </span>
           </button>
 
-          {/* Desktop Navigation Link Items */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation Links: Pill Navigation Style */}
+          <nav className="hidden md:flex items-center gap-1.5 bg-slate-100/60 p-1 rounded-full border border-slate-200/40">
             <button
               onClick={handleHomeClick}
-              className={`text-sm font-semibold tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none ${
-                location.pathname === "/" ? "text-brand-blue font-extrabold" : "text-slate-600 hover:text-brand-blue"
+              className={`text-xs font-bold tracking-wide transition-all px-4 py-2 rounded-full cursor-pointer focus:outline-none ${
+                location.pathname === "/" 
+                  ? "bg-white text-brand-blue shadow-sm font-extrabold" 
+                  : "text-slate-600 hover:text-brand-blue hover:bg-white/50"
               }`}
             >
               Home
-              <span className={`absolute bottom-0 left-0 h-0.5 bg-brand-blue transition-all group-hover:w-full ${location.pathname === "/" ? "w-full" : "w-0"}`} />
             </button>
             <button
               onClick={handleProductsClick}
-              className={`text-sm font-semibold tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none ${
-                location.pathname === "/products" ? "text-brand-blue font-extrabold" : "text-slate-600 hover:text-brand-blue"
+              className={`text-xs font-bold tracking-wide transition-all px-4 py-2 rounded-full cursor-pointer focus:outline-none ${
+                location.pathname === "/products" 
+                  ? "bg-white text-brand-blue shadow-sm font-extrabold" 
+                  : "text-slate-600 hover:text-brand-blue hover:bg-white/50"
               }`}
             >
               Products
-              <span className={`absolute bottom-0 left-0 h-0.5 bg-brand-blue transition-all group-hover:w-full ${location.pathname === "/products" ? "w-full" : "w-0"}`} />
             </button>
-            
-            {user && !CATALOG_MODE && (
-              <Link
-                to="/track-order"
-                className="text-sm font-semibold text-slate-600 hover:text-brand-blue capitalize tracking-wide transition-colors relative group py-1 flex items-center gap-1"
-              >
-                <FiSearch />
-                <span>Track Order</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all group-hover:w-full" />
-              </Link>
-            )}
-
             <button
               onClick={handleAboutClick}
-              className={`text-sm font-semibold tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none ${
-                location.pathname === "/about" ? "text-brand-blue font-extrabold" : "text-slate-600 hover:text-brand-blue"
+              className={`text-xs font-bold tracking-wide transition-all px-4 py-2 rounded-full cursor-pointer focus:outline-none ${
+                location.pathname === "/about" 
+                  ? "bg-white text-brand-blue shadow-sm font-extrabold" 
+                  : "text-slate-600 hover:text-brand-blue hover:bg-white/50"
               }`}
             >
               About
-              <span className={`absolute bottom-0 left-0 h-0.5 bg-brand-blue transition-all group-hover:w-full ${location.pathname === "/about" ? "w-full" : "w-0"}`} />
             </button>
-            
             <button
               onClick={() => handleNavClick("contact-us")}
-              className="text-sm font-semibold text-slate-600 hover:text-brand-blue capitalize tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none"
+              className="text-xs font-bold tracking-wide transition-all px-4 py-2 rounded-full cursor-pointer focus:outline-none text-slate-600 hover:text-brand-blue hover:bg-white/50"
             >
               Contact
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all group-hover:w-full" />
             </button>
-
-            {user?.role === "admin" && (
-              <Link
-                to="/admin"
-                className="text-sm font-bold text-brand-green hover:text-brand-green-hover capitalize tracking-wide transition-colors relative group py-1 flex items-center gap-1"
-              >
-                <FiBriefcase />
-                <span>Admin Panel</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green transition-all group-hover:w-full" />
-              </Link>
-            )}
           </nav>
 
-          {/* Action Icons Panel */}
-          <div className="flex items-center gap-4">
+          {/* Action Icons and Search Pill */}
+          <div className="flex items-center gap-3">
             
-            {/* Search Toggle */}
+            {/* Integrated Search Bar Trigger */}
+            <div 
+              onClick={onOpenSearch}
+              className="relative hidden lg:block cursor-pointer group"
+            >
+              <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-brand-blue transition-colors text-sm" />
+              <div className="pl-9 pr-8 py-1.5 bg-slate-50 group-hover:bg-slate-100/80 border border-slate-200/80 group-hover:border-slate-300 rounded-full text-slate-400 text-xs font-bold w-40 transition-all select-none shadow-inner">
+                Search products...
+              </div>
+            </div>
+
+            {/* Mobile/Tablet Search Button */}
             <button
               onClick={onOpenSearch}
-              className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full transition-all cursor-pointer focus:outline-none"
+              className="lg:hidden p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-100/60 rounded-full transition-all cursor-pointer focus:outline-none"
               title="Search Products"
             >
               <FiSearch className="text-lg" />
             </button>
 
-            {/* Profile Dropdown */}
-            <div className="relative group">
-              {user ? (
-                <div className="flex items-center gap-2">
-                  <button className="flex items-center gap-2 p-1.5 px-3 bg-brand-soft-blue text-brand-blue rounded-full text-xs font-bold hover:bg-brand-blue hover:text-white transition-colors cursor-pointer focus:outline-none">
-                    <FiUser className="text-sm" />
-                    <span className="max-w-[80px] truncate">Hi, {user.name.split(" ")[0]}</span>
-                  </button>
-                  <div className="absolute right-0 top-full mt-2 w-44 bg-white rounded-xl shadow-lg border border-slate-100 py-1 hidden group-hover:block animate-fade-in z-50">
-                    {user.role === "admin" && (
-                      <Link
-                        to="/admin"
-                        className="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2"
-                      >
-                        <FiBriefcase className="text-sm" />
-                        <span>Admin Panel</span>
-                      </Link>
-                    )}
-                    {!CATALOG_MODE && (
-                      <>
-                        <Link
-                          to="/orders"
-                          className="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2"
-                        >
-                          <FiFileText className="text-sm" />
-                          <span>My Orders</span>
-                        </Link>
-                        <Link
-                          to="/track-order"
-                          className="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2"
-                        >
-                          <FiSearch className="text-sm" />
-                          <span>Track Order</span>
-                        </Link>
-                      </>
-                    )}
-                    <hr className="border-slate-100 my-1" />
-                    <button
-                      onClick={logout}
-                      className="w-full text-left px-4 py-2.5 text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors flex items-center gap-2 cursor-pointer"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  onClick={onOpenLogin}
-                  className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full transition-all cursor-pointer focus:outline-none"
-                  title="User Profile / Login"
-                >
-                  <FiUser className="text-lg" />
-                </button>
-              )}
-            </div>
-
-            {/* Wishlist Trigger */}
+            {/* Wishlist Button */}
             <Link
               to="/wishlist"
-              className="p-2.5 text-slate-600 hover:text-rose-500 hover:bg-slate-50 rounded-full relative transition-all flex items-center"
+              className="p-2.5 text-slate-600 hover:text-rose-500 hover:bg-slate-100/60 rounded-full relative transition-all flex items-center"
               title="Wishlist"
             >
               <FiHeart className="text-lg" />
               {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white animate-pulse-subtle">
+                <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white rounded-full flex items-center justify-center text-[9px] font-bold border border-white animate-pulse-subtle">
                   {wishlistCount}
                 </span>
               )}
@@ -240,22 +176,78 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
             {user && !CATALOG_MODE && (
               <button
                 onClick={onOpenCart}
-                className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full relative transition-all cursor-pointer focus:outline-none"
+                className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-100/60 rounded-full relative transition-all cursor-pointer focus:outline-none"
                 title="Shopping Cart"
               >
                 <FiShoppingCart className="text-lg" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white animate-pulse-subtle">
+                  <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] font-bold border border-white animate-pulse-subtle">
                     {cartCount}
                   </span>
                 )}
               </button>
             )}
 
+            {/* User Dropdown Profile Button */}
+            <div className="relative group">
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <button className="flex items-center gap-1.5 p-1.5 px-3 bg-brand-soft-blue hover:bg-brand-blue hover:text-white text-brand-blue rounded-full text-xs font-bold transition-all cursor-pointer focus:outline-none border border-brand-blue/10 shadow-sm">
+                    <FiUser className="text-sm" />
+                    <span className="max-w-[70px] truncate hidden sm:inline">Hi, {user.name.split(" ")[0]}</span>
+                  </button>
+                  <div className="absolute right-0 top-full mt-2 w-44 bg-white rounded-2xl shadow-lg border border-slate-100 py-1.5 hidden group-hover:block animate-fade-in z-50">
+                    {user.role === "admin" && (
+                      <Link
+                        to="/admin"
+                        className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2"
+                      >
+                        <FiBriefcase className="text-sm" />
+                        <span>Admin Panel</span>
+                      </Link>
+                    )}
+                    {!CATALOG_MODE && (
+                      <>
+                        <Link
+                          to="/orders"
+                          className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2"
+                        >
+                          <FiFileText className="text-sm" />
+                          <span>My Orders</span>
+                        </Link>
+                        <Link
+                          to="/track-order"
+                          className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-2"
+                        >
+                          <FiSearch className="text-sm" />
+                          <span>Track Order</span>
+                        </Link>
+                      </>
+                    )}
+                    <hr className="border-slate-100 my-1" />
+                    <button
+                      onClick={logout}
+                      className="w-full text-left px-4 py-2.5 text-xs font-extrabold text-rose-600 hover:bg-rose-50 transition-colors flex items-center gap-2 cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={onOpenLogin}
+                  className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-100/60 rounded-full transition-all cursor-pointer focus:outline-none border border-slate-200/60 shadow-sm"
+                  title="User Profile / Login"
+                >
+                  <FiUser className="text-lg" />
+                </button>
+              )}
+            </div>
+
             {/* Mobile Menu Icon */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full md:hidden transition-all cursor-pointer focus:outline-none"
+              className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-100/60 rounded-full md:hidden transition-all cursor-pointer focus:outline-none border border-slate-200/60 shadow-sm"
             >
               {isMobileMenuOpen ? <FiX className="text-lg" /> : <FiMenu className="text-lg" />}
             </button>
@@ -327,7 +319,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
       </header>
       
       {/* Spacer to push content below header */}
-      <div className={CATALOG_MODE ? "h-[104px]" : "h-[72px]"} />
+      <div className={CATALOG_MODE ? "h-[104px]" : "h-[76px]"} />
 
       {/* Floating Back-to-Top scroll action button */}
       {showScrollTop && (
