@@ -220,7 +220,7 @@ export default function Products({
             {CATALOG_MODE && (
               <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-3.5 text-xs font-bold text-center w-full shadow-sm flex items-center justify-center gap-2 mb-6">
                 <span>📢</span>
-                <span>Online ordering will be available shortly. Inquiry operations are active.</span>
+                <span>Online ordering will be available shortly. For inquiries, Call/WhatsApp: +91 7021204733</span>
               </div>
             )}
 

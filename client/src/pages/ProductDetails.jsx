@@ -375,7 +375,7 @@ export default function ProductDetails({ onAddToCart }) {
                   {/* Notice Alert Banner */}
                   <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-4 text-xs font-bold flex items-center gap-2.5 shadow-sm">
                     <span>📢</span>
-                    <span>Direct online payments checkout will be open shortly. You can place quick inquiries via the options below.</span>
+                    <span>Online ordering will be available shortly. For inquiries, Call/WhatsApp: +91 7021204733</span>
                   </div>
 
                   {/* Actions buttons grid */}

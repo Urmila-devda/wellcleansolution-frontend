@@ -79,7 +79,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
         {CATALOG_MODE && (
           <div className="bg-amber-500 text-white text-center py-1.5 px-4 text-[11px] font-bold w-full tracking-wide shadow-sm flex items-center justify-center gap-1.5 animate-pulse-subtle">
             <span>📢</span>
-            <span>Online ordering will be available shortly. Inquiry operations are active.</span>
+            <span>Online ordering will be available shortly. For inquiries, Call/WhatsApp: +91 7021204733</span>
           </div>
         )}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
