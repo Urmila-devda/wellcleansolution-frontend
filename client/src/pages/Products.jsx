@@ -21,7 +21,6 @@ export default function Products({
 
   // Filter & Search states
   const [searchTerm, setSearchTerm] = useState("")
-  const [priceRange, setPriceRange] = useState("All")
   const [sortBy, setSortBy] = useState("default")
 
   // Pagination states
@@ -65,7 +64,7 @@ export default function Products({
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1)
-  }, [selectedCategory, searchTerm, priceRange, sortBy])
+  }, [selectedCategory, searchTerm, sortBy])
 
   // Filter products
   const filteredProducts = products.filter((p) => {
@@ -76,12 +75,6 @@ export default function Products({
     // 2. Search filter
     if (searchTerm && !p.name.toLowerCase().includes(searchTerm.toLowerCase()) && !p.description.toLowerCase().includes(searchTerm.toLowerCase())) {
       return false
-    }
-    // 3. Price Filter
-    if (priceRange !== "All") {
-      if (priceRange === "under-9" && p.price >= 9) return false
-      if (priceRange === "9-11" && (p.price < 9 || p.price > 11)) return false
-      if (priceRange === "above-11" && p.price <= 11) return false
     }
     return true
   })
@@ -188,34 +181,6 @@ export default function Products({
               </div>
             </div>
 
-            {/* Price Filter Card */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
-              <h3 className="text-sm font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
-                <FiSliders className="text-brand-green" />
-                Filter by Price
-              </h3>
-              <div className="space-y-2">
-                {[
-                  { label: "All Prices", value: "All" },
-                  { label: "Under ₹9", value: "under-9" },
-                  { label: "₹9 - ₹11", value: "9-11" },
-                  { label: "Above ₹11", value: "above-11" },
-                ].map((range) => (
-                  <label key={range.value} className="flex items-center gap-2 text-xs font-semibold text-slate-600 cursor-pointer hover:text-slate-800">
-                    <input
-                      type="radio"
-                      name="priceRange"
-                      value={range.value}
-                      checked={priceRange === range.value}
-                      onChange={(e) => setPriceRange(e.target.value)}
-                      className="rounded border-slate-300 text-brand-blue focus:ring-brand-blue h-4 w-4"
-                    />
-                    <span>{range.label}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
           </aside>
 
           {/* Right Product Grid Column */}
@@ -279,7 +244,6 @@ export default function Products({
                   onClick={() => {
                     setSearchTerm("")
                     setSelectedCategory("All")
-                    setPriceRange("All")
                     setSortBy("default")
                   }}
                   className="px-4 py-2 bg-slate-800 hover:bg-brand-blue text-white rounded-full text-xs font-bold transition-all shadow-sm"
