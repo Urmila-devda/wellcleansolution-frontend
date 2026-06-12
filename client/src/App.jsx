@@ -14,6 +14,7 @@ import OrderHistory from "./pages/OrderHistory"
 import AdminDashboard from "./pages/AdminDashboard"
 import Wishlist from "./pages/Wishlist"
 import TrackOrder from "./pages/TrackOrder"
+import About from "./pages/About"
 
 // Routing wrapper
 import ProtectedRoute from "./components/ProtectedRoute"
@@ -42,6 +43,7 @@ function AppContent() {
         <Route path="/login" element={<UserRouteWrapper Component={Home} />} />
         <Route path="/register" element={<UserRouteWrapper Component={Home} />} />
         <Route path="/wishlist" element={<UserRouteWrapper Component={Wishlist} />} />
+        <Route path="/about" element={<UserRouteWrapper Component={About} />} />
         
         <Route
           path="/checkout"

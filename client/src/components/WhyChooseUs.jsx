@@ -1,38 +1,38 @@
 import React from 'react';
-import { FiAward, FiShield, FiTrendingUp, FiTruck } from 'react-icons/fi';
+import { FiAward, FiUsers, FiTruck, FiTag } from 'react-icons/fi';
 
 const features = [
   {
-    id: 'premium',
+    id: 'quality',
     icon: <FiAward />,
-    title: 'Premium Quality Products',
-    desc: 'Formulated with high-grade surfactants and natural concentrates to deliver professional-grade cleaning results.',
+    title: 'High Quality Products',
+    desc: 'Formulated with premium biodegradable agents and natural botanical concentrates to deliver professional, industrial-grade hygiene.',
     colorBg: 'bg-brand-soft-blue text-brand-blue',
     hoverGlow: 'hover:shadow-brand-blue/10 hover:border-brand-blue/30'
   },
   {
-    id: 'germ',
-    icon: <FiShield />,
-    title: 'Effective Germ Protection',
-    desc: 'Lab-tested formulas that eliminate 99.9% of bacteria and household pathogens, keeping your family safe.',
+    id: 'trusted',
+    icon: <FiUsers />,
+    title: 'Trusted by Customers',
+    desc: 'With verified 4.9/5 star ratings across thousands of households, we are Thane\'s chosen name for eco-safe sanitation.',
     colorBg: 'bg-brand-soft-green text-brand-green',
     hoverGlow: 'hover:shadow-brand-green/10 hover:border-brand-green/30'
   },
   {
-    id: 'eco',
-    icon: <FiTrendingUp />,
-    title: 'Eco-Friendly Ingredients',
-    desc: 'Biodegradable, plant-based ingredients packaged in recyclable materials that reduce environmental impact.',
-    colorBg: 'bg-purple-50 text-purple-600',
-    hoverGlow: 'hover:shadow-purple-500/10 hover:border-purple-500/30'
-  },
-  {
     id: 'delivery',
     icon: <FiTruck />,
-    title: 'Fast & Secure Delivery',
-    desc: 'Reliable nationwide shipping with real-time tracking, ensuring your hygiene supplies arrive when needed.',
+    title: 'Fast Delivery',
+    desc: 'Secure nationwide shipping with real-time tracking, ensuring your sanitization supplies arrive safely right to your doorstep.',
     colorBg: 'bg-amber-50 text-amber-600',
     hoverGlow: 'hover:shadow-amber-500/10 hover:border-amber-500/30'
+  },
+  {
+    id: 'pricing',
+    icon: <FiTag />,
+    title: 'Affordable Pricing',
+    desc: 'Direct-to-consumer value without middleman markup. Premium concentrated formulations that save you money per wash.',
+    colorBg: 'bg-purple-50 text-purple-600',
+    hoverGlow: 'hover:shadow-purple-500/10 hover:border-purple-500/30'
   }
 ];
 
@@ -44,13 +44,13 @@ export default function WhyChooseUs() {
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="text-xs font-bold text-brand-blue uppercase tracking-widest bg-brand-soft-blue px-3 py-1 rounded-full">
-            Why Well Clean Solutions
+            Our Key Brand Pillars
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
-            Designed for Clean Living, Better Living
+            Why Choose Well Clean Solutions
           </h2>
-          <p className="text-sm sm:text-base text-slate-500 max-w-xl mx-auto">
-            We combine high-potency sanitation science with eco-friendly integrity to provide cleaning products that you can trust.
+          <p className="text-sm sm:text-base text-slate-550 max-w-xl mx-auto font-semibold">
+            We bridge the gap between heavy-duty cleaning science and eco-friendly family safety, ensuring clean spaces with total peace of mind.
           </p>
         </div>
 
@@ -59,10 +59,10 @@ export default function WhyChooseUs() {
           {features.map((feat) => (
             <div 
               key={feat.id}
-              className={`p-8 bg-slate-50/50 hover:bg-white border border-slate-100 hover:scale-105 rounded-2xl transition-all duration-300 ${feat.hoverGlow}`}
+              className={`p-8 bg-slate-50/50 hover:bg-white border border-slate-100 rounded-2xl transition-all duration-300 hover:scale-[1.03] ${feat.hoverGlow}`}
             >
               {/* Icon Container */}
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6 shadow-sm ${feat.colorBg}`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-6 shadow-inner ${feat.colorBg}`}>
                 {feat.icon}
               </div>
 
@@ -70,7 +70,7 @@ export default function WhyChooseUs() {
               <h3 className="font-bold text-slate-800 text-base mb-3 leading-snug">
                 {feat.title}
               </h3>
-              <p className="text-slate-500 text-xs leading-relaxed">
+              <p className="text-slate-500 text-xs leading-relaxed font-semibold">
                 {feat.desc}
               </p>
             </div>

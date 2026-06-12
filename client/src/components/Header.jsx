@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
-import { FiSearch, FiShoppingCart, FiUser, FiMenu, FiX, FiBriefcase, FiFileText, FiHeart } from "react-icons/fi"
+import { FiSearch, FiShoppingCart, FiUser, FiMenu, FiX, FiBriefcase, FiFileText, FiHeart, FiChevronUp } from "react-icons/fi"
 import { useAuth } from "../context/AuthContext"
 import logoImg from "../assets/logo.jpg"
 import { CATALOG_MODE } from "../config"
@@ -8,6 +8,7 @@ import { CATALOG_MODE } from "../config"
 export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelectCategory }) {
   const { user, logout, cartItems, wishlist } = useAuth()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   
   const navigate = useNavigate()
@@ -19,10 +20,27 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
+      setShowScrollTop(window.scrollY > 400)
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const handleHomeClick = () => {
+    setIsMobileMenuOpen(false)
+    navigate("/")
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const handleAboutClick = () => {
+    setIsMobileMenuOpen(false)
+    navigate("/about")
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
 
   const handleNavClick = (sectionId) => {
     setIsMobileMenuOpen(false)
@@ -33,7 +51,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
       setTimeout(() => {
         const el = document.getElementById(sectionId)
         el?.scrollIntoView({ behavior: "smooth" })
-      }, 300)
+      }, 350)
     } else {
       const el = document.getElementById(sectionId)
       el?.scrollIntoView({ behavior: "smooth" })
@@ -46,13 +64,16 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
       onSelectCategory("All")
     }
     navigate("/products")
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-45 transition-all duration-300 font-sans ${
-          isScrolled ? "glassmorphism shadow-md py-3" : "bg-white/90 border-b border-slate-100 py-4"
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 font-sans ${
+          isScrolled 
+            ? "glassmorphism shadow-md py-3" 
+            : "bg-white/95 border-b border-slate-100/80 py-4"
         }`}
       >
         {CATALOG_MODE && (
@@ -63,32 +84,35 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
         )}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 cursor-pointer">
+          {/* Brand Logo */}
+          <button onClick={handleHomeClick} className="flex items-center gap-2.5 cursor-pointer text-left focus:outline-none">
             <img src={logoImg} alt="Well Clean Solutions" className="h-10 w-auto object-contain rounded" />
             <span className="text-xl font-extrabold tracking-tight text-slate-800">
               Well Clean <span className="text-brand-blue">Solutions</span>
             </span>
-          </Link>
+          </button>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Link Items */}
           <nav className="hidden md:flex items-center gap-8">
             <button
-              onClick={() => handleNavClick("hero")}
-              className="text-sm font-semibold text-slate-600 hover:text-brand-blue capitalize tracking-wide transition-colors relative group py-1 cursor-pointer"
+              onClick={handleHomeClick}
+              className={`text-sm font-semibold tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none ${
+                location.pathname === "/" ? "text-brand-blue font-extrabold" : "text-slate-600 hover:text-brand-blue"
+              }`}
             >
               Home
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all group-hover:w-full" />
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-brand-blue transition-all group-hover:w-full ${location.pathname === "/" ? "w-full" : "w-0"}`} />
             </button>
             <button
               onClick={handleProductsClick}
-              className="text-sm font-semibold text-slate-600 hover:text-brand-blue capitalize tracking-wide transition-colors relative group py-1 cursor-pointer"
+              className={`text-sm font-semibold tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none ${
+                location.pathname === "/products" ? "text-brand-blue font-extrabold" : "text-slate-600 hover:text-brand-blue"
+              }`}
             >
               Products
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all group-hover:w-full" />
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-brand-blue transition-all group-hover:w-full ${location.pathname === "/products" ? "w-full" : "w-0"}`} />
             </button>
             
-            {/* Conditional Track Order Link: Visible only if logged in */}
             {user && !CATALOG_MODE && (
               <Link
                 to="/track-order"
@@ -101,16 +125,18 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
             )}
 
             <button
-              onClick={() => handleNavClick("about-us")}
-              className="text-sm font-semibold text-slate-600 hover:text-brand-blue capitalize tracking-wide transition-colors relative group py-1 cursor-pointer"
+              onClick={handleAboutClick}
+              className={`text-sm font-semibold tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none ${
+                location.pathname === "/about" ? "text-brand-blue font-extrabold" : "text-slate-600 hover:text-brand-blue"
+              }`}
             >
               About
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all group-hover:w-full" />
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-brand-blue transition-all group-hover:w-full ${location.pathname === "/about" ? "w-full" : "w-0"}`} />
             </button>
             
             <button
               onClick={() => handleNavClick("contact-us")}
-              className="text-sm font-semibold text-slate-600 hover:text-brand-blue capitalize tracking-wide transition-colors relative group py-1 cursor-pointer"
+              className="text-sm font-semibold text-slate-600 hover:text-brand-blue capitalize tracking-wide transition-colors relative group py-1 cursor-pointer focus:outline-none"
             >
               Contact
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all group-hover:w-full" />
@@ -128,23 +154,23 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
             )}
           </nav>
 
-          {/* Search, User Account, Cart Actions */}
+          {/* Action Icons Panel */}
           <div className="flex items-center gap-4">
             
-            {/* Search Trigger */}
+            {/* Search Toggle */}
             <button
               onClick={onOpenSearch}
-              className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full transition-all cursor-pointer"
+              className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full transition-all cursor-pointer focus:outline-none"
               title="Search Products"
             >
               <FiSearch className="text-lg" />
             </button>
 
-            {/* User Account / Dropdown */}
+            {/* Profile Dropdown */}
             <div className="relative group">
               {user ? (
                 <div className="flex items-center gap-2">
-                  <button className="flex items-center gap-2 p-1.5 px-3 bg-brand-soft-blue text-brand-blue rounded-full text-xs font-bold hover:bg-brand-blue hover:text-white transition-colors cursor-pointer">
+                  <button className="flex items-center gap-2 p-1.5 px-3 bg-brand-soft-blue text-brand-blue rounded-full text-xs font-bold hover:bg-brand-blue hover:text-white transition-colors cursor-pointer focus:outline-none">
                     <FiUser className="text-sm" />
                     <span className="max-w-[80px] truncate">Hi, {user.name.split(" ")[0]}</span>
                   </button>
@@ -188,7 +214,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
               ) : (
                 <button
                   onClick={onOpenLogin}
-                  className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full transition-all cursor-pointer"
+                  className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full transition-all cursor-pointer focus:outline-none"
                   title="User Profile / Login"
                 >
                   <FiUser className="text-lg" />
@@ -210,11 +236,11 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
               )}
             </Link>
 
-            {/* Shopping Cart Drawer Trigger: Visible only if logged in */}
+            {/* Cart Trigger */}
             {user && !CATALOG_MODE && (
               <button
                 onClick={onOpenCart}
-                className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full relative transition-all cursor-pointer"
+                className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full relative transition-all cursor-pointer focus:outline-none"
                 title="Shopping Cart"
               >
                 <FiShoppingCart className="text-lg" />
@@ -226,10 +252,10 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
               </button>
             )}
 
-            {/* Mobile Menu Toggle */}
+            {/* Mobile Menu Icon */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full md:hidden transition-all cursor-pointer"
+              className="p-2.5 text-slate-600 hover:text-brand-blue hover:bg-slate-50 rounded-full md:hidden transition-all cursor-pointer focus:outline-none"
             >
               {isMobileMenuOpen ? <FiX className="text-lg" /> : <FiMenu className="text-lg" />}
             </button>
@@ -241,7 +267,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md px-6 py-4 space-y-3 shadow-inner">
             <button
-              onClick={() => handleNavClick("hero")}
+              onClick={handleHomeClick}
               className="block w-full text-left py-2 text-sm font-semibold text-slate-700 hover:text-brand-blue capitalize transition-colors cursor-pointer"
             >
               Home
@@ -253,7 +279,6 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
               Products
             </button>
             
-            {/* Conditional Mobile Track Order Link: Visible only if logged in */}
             {user && !CATALOG_MODE && (
               <Link
                 to="/track-order"
@@ -265,7 +290,7 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
             )}
 
             <button
-              onClick={() => handleNavClick("about-us")}
+              onClick={handleAboutClick}
               className="block w-full text-left py-2 text-sm font-semibold text-slate-700 hover:text-brand-blue capitalize transition-colors cursor-pointer"
             >
               About
@@ -300,8 +325,20 @@ export default function Header({ onOpenCart, onOpenSearch, onOpenLogin, onSelect
           </div>
         )}
       </header>
-      {/* Spacer to push elements down */}
+      
+      {/* Spacer to push content below header */}
       <div className={CATALOG_MODE ? "h-[104px]" : "h-[72px]"} />
+
+      {/* Floating Back-to-Top scroll action button */}
+      {showScrollTop && (
+        <button
+          onClick={handleScrollTop}
+          className="fixed bottom-6 right-6 p-3 bg-brand-blue hover:bg-brand-blue-hover text-white rounded-full shadow-lg transition-all z-50 flex items-center justify-center cursor-pointer animate-fade-in hover:scale-110 border border-white/20 focus:outline-none"
+          title="Back to Top"
+        >
+          <FiChevronUp className="text-xl" />
+        </button>
+      )}
     </>
   )
 }

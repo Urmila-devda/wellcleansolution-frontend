@@ -3,7 +3,7 @@ import Hero from "../components/Hero"
 import BestSellers from "../components/BestSellers"
 import WhyChooseUs from "../components/WhyChooseUs"
 import Testimonials from "../components/Testimonials"
-import AboutUs from "../components/AboutUs"
+import FAQ from "../components/FAQ"
 import ContactSection from "../components/ContactSection"
 import { productsAPI } from "../services/api"
 import { getProductImage, getImageUrl } from "../utils/imageMapper"
@@ -75,7 +75,7 @@ export default function Home({
 
       <WhyChooseUs />
       <Testimonials />
-      <AboutUs />
+      <FAQ />
       <ContactSection />
     </div>
   )
