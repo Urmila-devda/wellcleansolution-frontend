@@ -3,20 +3,12 @@ import { FiChevronDown, FiHelpCircle } from "react-icons/fi"
 
 const faqData = [
   {
-    question: "Are Well Clean Solutions products safe for children and pets?",
-    answer: "Yes, absolutely. All of our formulations utilize non-toxic, family-safe, and biodegradable ingredients. They are free from toxic chlorine bleach fumes and harsh acid corrosives, making them ideal and safe for households with kids and pets.",
-  },
-  {
     question: "How long does shipping and delivery take?",
     answer: "We offer reliable nationwide delivery. Standard shipping typically takes between 2 to 5 business days depending on your location. Once your order is processed, you will receive real-time tracking updates.",
   },
   {
     question: "Do you offer bulk quantities for corporate businesses or distributors?",
     answer: "Yes, we do. We offer custom bulk configurations (such as 5 Litre concentrates) and commercial wholesale rates for offices, educational institutions, distributors, and cleaning companies. Please fill out our contact enquiry form below to receive a custom quote.",
-  },
-  {
-    question: "What makes your products eco-friendly?",
-    answer: "Our cleaning agents are formulated with plant-based active surfactants instead of harsh petrochemicals. They dissolve safely into the ecosystem without damaging water systems. Furthermore, we use recyclable plastic packaging to minimize environment footprints.",
   },
   {
     question: "How can I purchase Well Clean Solutions products online?",
