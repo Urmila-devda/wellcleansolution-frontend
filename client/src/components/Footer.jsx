@@ -118,7 +118,7 @@ export default function Footer({ onSelectCategory }) {
               </li>
               <li className="flex items-center gap-2.5">
                 <FiMail className="text-amber-500 text-sm flex-shrink-0" />
-                <span>wellcleansolutions11@gmail.com</span>
+                <span>wellclean11@gmail.com</span>
               </li>
             </ul>
           </div>
