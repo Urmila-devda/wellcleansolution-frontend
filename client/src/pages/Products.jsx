@@ -4,7 +4,8 @@ import { FiSearch, FiStar, FiShoppingBag, FiEye, FiHeart, FiSliders, FiChevronLe
 import { useAuth } from "../context/AuthContext"
 import { CATALOG_MODE } from "../config"
 import { productsAPI } from "../services/api"
-import { getProductImage, getImageUrl } from "../utils/imageMapper"
+import { getProductImage, getImageUrl, getCategoryFallbackImage } from "../utils/imageMapper"
+
 
 export default function Products({
   onAddToCart,
@@ -278,8 +279,13 @@ export default function Products({
                         <img
                           src={product.image}
                           alt={product.name}
+                          onError={(e) => {
+                            e.target.onerror = null
+                            e.target.src = getCategoryFallbackImage(product.category)
+                          }}
                           className="max-h-40 max-w-full object-contain group-hover:scale-110 transition-transform duration-500"
                         />
+
 
                         {/* Quick Action Overlays on hover */}
                         <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">

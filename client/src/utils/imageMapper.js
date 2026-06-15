@@ -45,3 +45,15 @@ export const getImageUrl = (imagePath) => {
 export const getProductImage = (key) => {
   return getImageUrl(key)
 }
+
+export const getCategoryFallbackImage = (category) => {
+  if (!category) return productImages.surface
+  const cat = category.toLowerCase()
+  if (cat.includes("hand") || cat.includes("wash")) return productImages.handwash
+  if (cat.includes("toilet")) return productImages.toilet
+  if (cat.includes("glass")) return productImages.glass
+  if (cat.includes("floor")) return productImages.floor
+  if (cat.includes("dish")) return productImages.dishwash
+  return productImages.surface
+}
+

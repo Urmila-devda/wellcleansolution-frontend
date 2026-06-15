@@ -3,8 +3,9 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import { FiStar, FiShoppingBag, FiCheck, FiShield, FiHeart, FiPlus, FiMinus, FiInfo, FiLayers, FiList, FiAlertTriangle } from "react-icons/fi"
 import { useAuth } from "../context/AuthContext"
 import { productsAPI } from "../services/api"
-import { getProductImage, getImageUrl } from "../utils/imageMapper"
+import { getProductImage, getImageUrl, getCategoryFallbackImage } from "../utils/imageMapper"
 import { CATALOG_MODE } from "../config"
+
 
 export default function ProductDetails({ onAddToCart }) {
   const { id } = useParams()
@@ -212,8 +213,13 @@ export default function ProductDetails({ onAddToCart }) {
               <img
                 src={galleryImages[activeImageIdx]}
                 alt={product.name}
+                onError={(e) => {
+                  e.target.onerror = null
+                  e.target.src = getCategoryFallbackImage(product.category)
+                }}
                 className="max-h-[300px] md:max-h-[360px] object-contain transition-transform duration-300 ease-out hover:scale-[1.05]"
               />
+
             </div>
 
             {/* Thumbnails strip */}
@@ -229,7 +235,16 @@ export default function ProductDetails({ onAddToCart }) {
                         : "border-slate-100 hover:border-slate-300"
                     }`}
                   >
-                    <img src={img} alt={`View angle ${index + 1}`} className="max-h-full max-w-full object-contain" />
+                    <img
+                      src={img}
+                      alt={`View angle ${index + 1}`}
+                      onError={(e) => {
+                        e.target.onerror = null
+                        e.target.src = getCategoryFallbackImage(product.category)
+                      }}
+                      className="max-h-full max-w-full object-contain"
+                    />
+
                   </button>
                 ))}
               </div>
@@ -513,7 +528,16 @@ export default function ProductDetails({ onAddToCart }) {
                   className="group bg-white rounded-2xl border border-slate-100 hover:border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
                 >
                   <div className="bg-slate-50/50 p-6 flex items-center justify-center h-44 border-b border-slate-50 overflow-hidden relative">
-                    <img src={p.image} alt={p.name} className="max-h-36 max-w-full object-contain group-hover:scale-[1.05] transition-transform duration-500" />
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      onError={(e) => {
+                        e.target.onerror = null
+                        e.target.src = getCategoryFallbackImage(p.category)
+                      }}
+                      className="max-h-36 max-w-full object-contain group-hover:scale-[1.05] transition-transform duration-500"
+                    />
+
                   </div>
                   <div className="p-4 space-y-2 flex flex-col justify-between flex-grow">
                     <div className="space-y-1">
