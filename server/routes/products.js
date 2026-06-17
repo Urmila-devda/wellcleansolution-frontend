@@ -1,9 +1,29 @@
 const express = require("express")
 const router = express.Router()
+const jwt = require("jsonwebtoken")
 const Product = require("../models/Product")
+const User = require("../models/User")
 const { protect, isAdmin } = require("../middleware/auth")
 const upload = require("../middleware/upload")
 const { uploadToCloudinary, deleteImageFromStorage } = require("../utils/cloudinary")
+
+// Helper to check if requester is an admin
+const isRequesterAdmin = async (req) => {
+  try {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      const token = req.headers.authorization.split(" ")[1]
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || "wellclean_secret_key_12345")
+      const user = await User.findById(decoded.id)
+      return user && user.role === "admin"
+    }
+  } catch (error) {
+    // Treat as non-admin if verification fails
+  }
+  return false
+}
 
 // @desc    Get all products (with optional search and category filters)
 // @route   GET /api/products
@@ -27,7 +47,12 @@ router.get("/", async (req, res) => {
       ]
     }
 
-    const products = await Product.find(query)
+    const adminRequest = await isRequesterAdmin(req)
+    let queryBuilder = Product.find(query)
+    if (adminRequest) {
+      queryBuilder = queryBuilder.select("+hsnCode +gst")
+    }
+    const products = await queryBuilder
     res.json(products)
   } catch (error) {
     console.error(error)
@@ -60,7 +85,12 @@ router.post("/upload", protect, isAdmin, upload.array("images", 5), async (req, 
 // @access  Public
 router.get("/:id", async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id)
+    const adminRequest = await isRequesterAdmin(req)
+    let queryBuilder = Product.findById(req.params.id)
+    if (adminRequest) {
+      queryBuilder = queryBuilder.select("+hsnCode +gst")
+    }
+    const product = await queryBuilder
     if (product) {
       res.json(product)
     } else {
@@ -87,7 +117,7 @@ const inferCategory = (name) => {
 // @route   POST /api/products
 // @access  Private/Admin
 router.post("/", protect, isAdmin, async (req, res) => {
-  const { name, description, details, price, images, tag, stock, specs, ingredients, size } = req.body
+  const { name, description, details, price, images, tag, stock, specs, ingredients, size, hsnCode, gst } = req.body
 
   if (!name || !description || !details || price === undefined || stock === undefined) {
     return res.status(400).json({ message: "Missing required fields" })
@@ -112,6 +142,8 @@ router.post("/", protect, isAdmin, async (req, res) => {
       specs: specs || [],
       ingredients,
       size: size || "1 Litre",
+      hsnCode,
+      gst,
     })
 
     const createdProduct = await product.save()
@@ -126,10 +158,10 @@ router.post("/", protect, isAdmin, async (req, res) => {
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 router.put("/:id", protect, isAdmin, async (req, res) => {
-  const { name, description, details, price, images, tag, stock, specs, ingredients, size } = req.body
+  const { name, description, details, price, images, tag, stock, specs, ingredients, size, hsnCode, gst } = req.body
 
   try {
-    const product = await Product.findById(req.params.id)
+    const product = await Product.findById(req.params.id).select("+hsnCode +gst")
 
     if (product) {
       // Process image updates and clean up deleted files
@@ -161,6 +193,8 @@ router.put("/:id", protect, isAdmin, async (req, res) => {
       product.specs = specs !== undefined ? specs : product.specs
       product.ingredients = ingredients !== undefined ? ingredients : product.ingredients
       product.size = size !== undefined ? size : product.size
+      product.hsnCode = hsnCode !== undefined ? hsnCode : product.hsnCode
+      product.gst = gst !== undefined ? gst : product.gst
 
       const updatedProduct = await product.save()
       res.json(updatedProduct)

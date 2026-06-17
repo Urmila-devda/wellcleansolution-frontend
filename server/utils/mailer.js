@@ -69,8 +69,8 @@ const generateOrderHtml = (order, user, isAdminAlert = false) => {
     <tr>
       <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.name}</td>
       <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
-      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">$${item.price.toFixed(2)}</td>
-      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">$${(item.price * item.quantity).toFixed(2)}</td>
+      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">₹${item.price.toFixed(2)}</td>
+      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">₹${(item.price * item.quantity).toFixed(2)}</td>
     </tr>
   `
     )
@@ -96,13 +96,17 @@ const generateOrderHtml = (order, user, isAdminAlert = false) => {
             Name: ${user.name}<br/>
             Email: ${user.email}<br/>
             Phone: ${user.phone || "N/A"}<br/>
-            Order ID: ${order._id}
+            ${order.orderNumber ? `Order Number: <strong>${order.orderNumber}</strong><br/>` : ""}
+            Order ID: ${order._id}<br/>
+            ${order.razorpayPaymentId ? `Payment ID: <strong>${order.razorpayPaymentId}</strong><br/>` : ""}
           </div>
         `
             : `
           <p>Dear ${user.name},</p>
           <p>Thank you for shopping with WellClean! Your order has been successfully placed. We are preparing your eco-friendly hygiene products for delivery.</p>
+          ${order.orderNumber ? `<p><strong>Order Number:</strong> ${order.orderNumber}</p>` : ""}
           <p><strong>Order ID:</strong> ${order._id}</p>
+          ${order.razorpayPaymentId ? `<p><strong>Payment ID:</strong> ${order.razorpayPaymentId}</p>` : ""}
         `
         }
 
@@ -123,7 +127,7 @@ const generateOrderHtml = (order, user, isAdminAlert = false) => {
             <tr>
               <td colspan="2"></td>
               <td style="padding: 10px; font-weight: bold; text-align: right;">Grand Total:</td>
-              <td style="padding: 10px; font-weight: bold; text-align: right; color: #007BFF; font-size: 16px;">$${order.totalAmount.toFixed(2)}</td>
+              <td style="padding: 10px; font-weight: bold; text-align: right; color: #007BFF; font-size: 16px;">₹${order.totalAmount.toFixed(2)}</td>
             </tr>
           </tfoot>
         </table>

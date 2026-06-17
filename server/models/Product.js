@@ -69,6 +69,16 @@ const productSchema = new mongoose.Schema(
     specs: [specSchema],
     ingredients: {
       type: String,
+    },
+    hsnCode: {
+      type: String,
+      trim: true,
+      select: false,
+    },
+    gst: {
+      type: Number,
+      min: [0, "GST percentage cannot be negative"],
+      select: false,
     }
   },
   {

@@ -58,6 +58,7 @@ app.use("/api/auth", require("./routes/auth"))
 app.use("/api/products", require("./routes/products"))
 app.use("/api/cart", require("./routes/cart"))
 app.use("/api/orders", require("./routes/orders"))
+app.use("/api/payment", require("./routes/payment"))
 app.use("/api/enquiries", require("./routes/enquiries"))
 
 app.get("/", (req, res) => {

@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { FiChevronDown, FiHelpCircle } from "react-icons/fi"
+import { CATALOG_MODE } from "../config"
 
 const faqData = [
   {
@@ -12,7 +13,9 @@ const faqData = [
   },
   {
     question: "How can I purchase Well Clean Solutions products online?",
-    answer: "Currently, our website is running in Catalog mode. You can browse our full catalog and easily send an inquiry via WhatsApp or submit the quote form below. Direct secure online payment checkouts will be made available shortly.",
+    answer: CATALOG_MODE 
+      ? "Currently, our website is running in Catalog mode. You can browse our full catalog and easily send an inquiry via WhatsApp or submit the quote form below. Direct secure online payment checkouts will be made available shortly."
+      : "You can purchase our products online by adding them to your cart, proceeding to checkout, and placing an order. Once placed, your order status can be tracked under your profile.",
   },
 ]
 

@@ -50,8 +50,19 @@ const orderSchema = new mongoose.Schema(
     },
     orderStatus: {
       type: String,
-      enum: ["Pending", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"],
-      default: "Pending",
+      enum: ["Pending", "Confirmed", "Processing", "Packed", "Shipped", "Delivered", "Cancelled"],
+      default: "Processing",
+    },
+    orderNumber: {
+      type: String,
+      unique: true,
+      sparse: true, // Allow older orders without orderNumber
+    },
+    razorpayOrderId: {
+      type: String,
+    },
+    razorpayPaymentId: {
+      type: String,
     },
   },
   {

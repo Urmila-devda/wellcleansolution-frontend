@@ -60,6 +60,11 @@ export const ordersAPI = {
   updateStatus: (id, status) => API.put(`/orders/${id}/status`, { status }),
 }
 
+export const paymentAPI = {
+  createOrder: (amount) => API.post("/payment/create-order", { amount }),
+  verifyPayment: (data) => API.post("/payment/verify-payment", data),
+}
+
 export const enquiriesAPI = {
   submit: (data) => API.post("/enquiries", data),
   getAll: (params) => API.get("/enquiries", { params }),

@@ -15,6 +15,8 @@ import AdminDashboard from "./pages/AdminDashboard"
 import Wishlist from "./pages/Wishlist"
 import TrackOrder from "./pages/TrackOrder"
 import About from "./pages/About"
+import PaymentSuccess from "./pages/PaymentSuccess"
+import PaymentFailed from "./pages/PaymentFailed"
 
 // Routing wrapper
 import ProtectedRoute from "./components/ProtectedRoute"
@@ -55,6 +57,22 @@ function AppContent() {
                 <Checkout />
               </ProtectedRoute>
             )
+          }
+        />
+        <Route
+          path="/payment-success"
+          element={
+            <ProtectedRoute>
+              <PaymentSuccess />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/payment-failed"
+          element={
+            <ProtectedRoute>
+              <PaymentFailed />
+            </ProtectedRoute>
           }
         />
         <Route

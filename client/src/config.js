@@ -1,3 +1,3 @@
-export const CATALOG_MODE = true;
+export const CATALOG_MODE = false;
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 

@@ -75,6 +75,8 @@ export default function AdminDashboard({ activeTab = "overview" }) {
   const [prodTag, setProdTag] = useState("")
   const [prodStock, setProdStock] = useState(50)
   const [prodSize, setProdSize] = useState("1 Litre")
+  const [prodHsnCode, setProdHsnCode] = useState("")
+  const [prodGst, setProdGst] = useState("")
 
   const handleImageSelect = (e) => {
     const files = Array.from(e.target.files)
@@ -213,6 +215,8 @@ export default function AdminDashboard({ activeTab = "overview" }) {
       setProdTag(prod.tag || "")
       setProdStock(prod.stock)
       setProdSize(prod.size || "1 Litre")
+      setProdHsnCode(prod.hsnCode || "")
+      setProdGst(prod.gst !== undefined && prod.gst !== null ? prod.gst.toString() : "")
     } else {
       setProdName("")
       setProdPrice("")
@@ -224,6 +228,8 @@ export default function AdminDashboard({ activeTab = "overview" }) {
       setProdTag("")
       setProdStock(50)
       setProdSize("1 Litre")
+      setProdHsnCode("")
+      setProdGst("")
     }
     setIsProductModalOpen(true)
   }
@@ -284,6 +290,8 @@ export default function AdminDashboard({ activeTab = "overview" }) {
         ],
         ingredients: selectedProduct?.ingredients || "Water-based natural active enzymes.",
         size: prodSize,
+        hsnCode: prodHsnCode || undefined,
+        gst: prodGst !== "" ? Number(prodGst) : undefined,
       }
 
       if (modalMode === "add") {
@@ -311,6 +319,8 @@ export default function AdminDashboard({ activeTab = "overview" }) {
         return "bg-cyan-50 text-cyan-700 border-cyan-200"
       case "Processing":
         return "bg-blue-50 text-blue-700 border-blue-200"
+      case "Packed":
+        return "bg-indigo-50 text-indigo-700 border-indigo-200"
       case "Shipped":
         return "bg-purple-50 text-purple-700 border-purple-200"
       case "Delivered":
@@ -548,6 +558,8 @@ export default function AdminDashboard({ activeTab = "overview" }) {
                       <tr>
                         <th className="p-4 pl-6">Product</th>
                         <th className="p-4">Category</th>
+                        <th className="p-4">HSN</th>
+                        <th className="p-4">GST</th>
                         <th className="p-4">Price</th>
                         <th className="p-4">Stock</th>
                         <th className="p-4 pr-6 text-right">Actions</th>
@@ -566,10 +578,16 @@ export default function AdminDashboard({ activeTab = "overview" }) {
                             </div>
                             <div>
                               <h4 className="text-slate-800 font-bold leading-tight">{prod.name}</h4>
-                              {prod.tag && <span className="text-[9px] text-brand-blue font-black uppercase mt-0.5 bg-brand-soft-blue px-1.5 py-0.5 rounded-full inline-block">{prod.tag}</span>}
+                              {prod.tag && (
+                                <span className="text-[9px] text-brand-blue font-black uppercase mt-0.5 bg-brand-soft-blue px-1.5 py-0.5 rounded-full inline-block">
+                                  {prod.tag}
+                                </span>
+                              )}
                             </div>
                           </td>
                           <td className="p-4 font-bold text-slate-500">{prod.category}</td>
+                          <td className="p-4 font-mono font-bold text-slate-650">{prod.hsnCode || "—"}</td>
+                          <td className="p-4 font-bold text-emerald-600">{prod.gst !== undefined && prod.gst !== null ? `${prod.gst}%` : "—"}</td>
                           <td className="p-4 font-black text-slate-800">₹{prod.price.toFixed(2)}</td>
                           <td className={`p-4 font-bold ${prod.stock <= 5 ? "text-rose-500 animate-pulse" : "text-slate-700"}`}>
                             {prod.stock} items
@@ -610,39 +628,37 @@ export default function AdminDashboard({ activeTab = "overview" }) {
                   <table className="w-full text-left text-xs font-semibold text-slate-600">
                     <thead className="bg-slate-50/50 text-slate-400 border-b border-slate-100">
                       <tr>
-                        <th className="p-4 pl-6">Order ID</th>
-                        <th className="p-4">Customer</th>
-                        <th className="p-4">Products Purchased</th>
-                        <th className="p-4">Total Price</th>
-                        <th className="p-4">Shipping Address</th>
-                        <th className="p-4 pr-6">Change Status</th>
+                        <th className="p-4 pl-6">Order Number</th>
+                        <th className="p-4">Customer Name</th>
+                        <th className="p-4">Amount</th>
+                        <th className="p-4">Payment Status</th>
+                        <th className="p-4">Order Status</th>
+                        <th className="p-4 pr-6">Payment ID</th>
                       </tr>
                     </thead>
                     <tbody>
                       {orders.map((order) => (
                         <tr key={order._id} className="border-b border-slate-50 last:border-0 hover:bg-slate-50/30">
-                          <td className="p-4 pl-6 font-mono text-[10px] text-slate-400 max-w-[90px] truncate" title={order._id}>
-                            {order._id}
+                          <td className="p-4 pl-6 font-mono text-[10px] text-slate-700 font-bold" title={order._id}>
+                            {order.orderNumber || order._id}
                           </td>
                            <td className="p-4">
-                            <h4 className="text-slate-800 font-bold">{order.userId?.name || "Deleted User"}</h4>
-                            <p className="text-[10px] text-slate-400 mt-0.5">{order.userId?.email}</p>
-                          </td>
-                          <td className="p-4">
-                            <div className="space-y-1">
-                              {order.items.map((item, idx) => (
-                                <div key={idx} className="text-[10px] text-slate-500 leading-tight">
-                                  📦 {item.name} &times; <strong>{item.quantity}</strong>
-                                </div>
-                              ))}
-                            </div>
+                            <h4 className="text-slate-800 font-bold">{order.userName || order.userId?.name || "Deleted User"}</h4>
+                            <p className="text-[10px] text-slate-400 mt-0.5">{order.userEmail || order.userId?.email}</p>
                           </td>
                           <td className="p-4 font-black text-slate-800">₹{order.totalAmount.toFixed(2)}</td>
-                          <td className="p-4 max-w-[200px] text-[10px] leading-relaxed text-slate-500">
-                            {order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zip}<br/>
-                            📞 {order.shippingAddress.phone}
+                          <td className="p-4">
+                            <span className={`px-2.5 py-1 rounded-full text-[9px] font-black tracking-wider border ${
+                              order.paymentStatus === "Paid" 
+                                ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                                : order.paymentStatus === "Failed" 
+                                  ? "bg-rose-50 text-rose-700 border-rose-200" 
+                                  : "bg-amber-50 text-amber-705 border-amber-200"
+                            }`}>
+                              {order.paymentStatus || "Paid"}
+                            </span>
                           </td>
-                          <td className="p-4 pr-6">
+                          <td className="p-4">
                             <select
                               value={order.orderStatus}
                               onChange={(e) => handleStatusChange(order._id, e.target.value)}
@@ -653,10 +669,14 @@ export default function AdminDashboard({ activeTab = "overview" }) {
                               <option value="Pending">Pending</option>
                               <option value="Confirmed">Confirmed</option>
                               <option value="Processing">Processing</option>
+                              <option value="Packed">Packed</option>
                               <option value="Shipped">Shipped</option>
                               <option value="Delivered">Delivered</option>
                               <option value="Cancelled">Cancelled</option>
                             </select>
+                          </td>
+                          <td className="p-4 pr-6 font-mono text-[10px] text-slate-500">
+                            {order.razorpayPaymentId || "—"}
                           </td>
                         </tr>
                       ))}
@@ -944,6 +964,35 @@ export default function AdminDashboard({ activeTab = "overview" }) {
                     onChange={(e) => setProdTag(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-brand-blue text-slate-800"
                   />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-500">HSN Code</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 3402"
+                    value={prodHsnCode}
+                    onChange={(e) => setProdHsnCode(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-brand-blue text-slate-800"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-500">GST (%)</label>
+                  <select
+                    value={prodGst}
+                    onChange={(e) => setProdGst(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-brand-blue text-slate-800 cursor-pointer"
+                  >
+                    <option value="">Select GST (%)</option>
+                    <option value="0">0%</option>
+                    <option value="5">5%</option>
+                    <option value="12">12%</option>
+                    <option value="18">18%</option>
+                    <option value="24">24%</option>
+                    <option value="28">28%</option>
+                  </select>
                 </div>
               </div>
 
