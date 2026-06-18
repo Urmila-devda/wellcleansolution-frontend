@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { ordersAPI, productsAPI, enquiriesAPI } from "../services/api"
+import { ordersAPI, productsAPI, enquiriesAPI, returnsAPI } from "../services/api"
 import { getImageUrl } from "../utils/imageMapper"
 import { useAuth } from "../context/AuthContext"
 import {
@@ -16,6 +16,7 @@ import {
   FiClock,
   FiMail,
   FiSearch,
+  FiFileText,
 } from "react-icons/fi"
 
 export default function AdminDashboard({ activeTab = "overview" }) {
@@ -29,6 +30,15 @@ export default function AdminDashboard({ activeTab = "overview" }) {
   const [enquiries, setEnquiries] = useState([])
   const [enquiriesSearch, setEnquiriesSearch] = useState("")
   const [enquiriesFilterStatus, setEnquiriesFilterStatus] = useState("All")
+
+  // Return requests states
+  const [returnRequests, setReturnRequests] = useState([])
+  const [returnRequestsSearch, setReturnRequestsSearch] = useState("")
+  const [returnRequestsFilterStatus, setReturnRequestsFilterStatus] = useState("All")
+  const [selectedReturnRequest, setSelectedReturnRequest] = useState(null)
+  const [isReturnRequestModalOpen, setIsReturnRequestModalOpen] = useState(false)
+  const [adminRejectionReason, setAdminRejectionReason] = useState("")
+  const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false)
 
   const getChartData = () => {
     const dailyData = {}
@@ -142,6 +152,10 @@ export default function AdminDashboard({ activeTab = "overview" }) {
       // 3. Fetch Enquiries
       const enquiriesRes = await enquiriesAPI.getAll()
       setEnquiries(enquiriesRes.data)
+
+      // 4. Fetch Return Requests
+      const returnsRes = await returnsAPI.getAllAdmin()
+      setReturnRequests(returnsRes.data)
     } catch (error) {
       console.error(error)
       showToast("Failed to retrieve admin details", "error")
@@ -182,6 +196,26 @@ export default function AdminDashboard({ activeTab = "overview" }) {
     } catch (error) {
       console.error(error)
       showToast("Error updating enquiry status", "error")
+    }
+  }
+
+  const handleReturnRequestStatusChange = async (requestId, newStatus, reasonVal = "") => {
+    try {
+      setIsLoading(true)
+      const { data } = await returnsAPI.updateStatus(requestId, newStatus, reasonVal)
+      setReturnRequests((prev) =>
+        prev.map((r) =>
+          r._id === requestId
+            ? { ...r, status: data.status, rejectionReason: data.rejectionReason }
+            : r
+        )
+      )
+      showToast(`Return request status updated to ${newStatus}`, "success")
+    } catch (error) {
+      console.error(error)
+      showToast(error.response?.data?.message || "Error updating return request status", "error")
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -378,6 +412,22 @@ export default function AdminDashboard({ activeTab = "overview" }) {
             >
               <FiMail className="text-base" />
               <span>Customer Enquiries ({enquiries.length})</span>
+            </button>
+            <button
+              onClick={() => navigate("/admin/return-requests")}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold transition-all ${
+                activeTab === "return-requests" ? "bg-brand-blue text-white" : "hover:bg-slate-800/60 hover:text-slate-200"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <FiFileText className="text-base" />
+                <span>Return Requests</span>
+              </div>
+              {returnRequests.filter(r => r.status === "Pending").length > 0 && (
+                <span className="bg-rose-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full inline-block leading-none">
+                  {returnRequests.filter(r => r.status === "Pending").length}
+                </span>
+              )}
             </button>
             
             <button
@@ -817,6 +867,192 @@ export default function AdminDashboard({ activeTab = "overview" }) {
               </div>
             )}
 
+            {/* RETURN REQUESTS MANAGEMENT TAB */}
+            {activeTab === "return-requests" && (
+              <div className="space-y-6 animate-fade-in-up">
+                <div>
+                  <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">Return & Refund Requests</h1>
+                  <p className="text-xs text-slate-400 mt-1">Verify customer refund claims, view uploaded photos, and process returns</p>
+                </div>
+
+                {/* Search & Filter Panel */}
+                <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="relative w-full sm:max-w-xs">
+                    <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+                    <input
+                      type="text"
+                      placeholder="Search requests..."
+                      value={returnRequestsSearch}
+                      onChange={(e) => setReturnRequestsSearch(e.target.value)}
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-brand-blue text-slate-800 font-semibold"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-4 justify-between w-full sm:w-auto">
+                    <span className="text-[11px] font-bold text-slate-400">
+                      Total Requests: {returnRequests.length}
+                    </span>
+
+                    <select
+                      value={returnRequestsFilterStatus}
+                      onChange={(e) => setReturnRequestsFilterStatus(e.target.value)}
+                      className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-brand-blue text-slate-650 font-bold cursor-pointer"
+                    >
+                      <option value="All">All Statuses</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Refunded">Refunded</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Return Requests List Table */}
+                {returnRequests.filter((req) => {
+                  if (returnRequestsFilterStatus !== "All" && req.status !== returnRequestsFilterStatus) return false
+                  if (returnRequestsSearch) {
+                    const s = returnRequestsSearch.toLowerCase()
+                    return (
+                      req.orderNumber.toLowerCase().includes(s) ||
+                      req.customerName.toLowerCase().includes(s) ||
+                      req.email.toLowerCase().includes(s) ||
+                      req.reason.toLowerCase().includes(s)
+                    )
+                  }
+                  return true
+                }).length === 0 ? (
+                  <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center shadow-sm space-y-3">
+                    <div className="text-3xl">📦</div>
+                    <h3 className="font-extrabold text-slate-800 text-lg">No Return Requests Found</h3>
+                    <p className="text-slate-400 text-xs max-w-sm mx-auto">
+                      There are no customer return or refund requests matching your criteria at this moment.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                    <table className="w-full text-left text-xs font-semibold text-slate-600">
+                      <thead className="bg-slate-50/50 text-slate-400 border-b border-slate-100">
+                        <tr>
+                          <th className="p-4 pl-6">Submitted Date</th>
+                          <th className="p-4">Customer Details</th>
+                          <th className="p-4">Order Ref</th>
+                          <th className="p-4">Reason & Issue</th>
+                          <th className="p-4">Images</th>
+                          <th className="p-4">Timeframe Validation</th>
+                          <th className="p-4">Status</th>
+                          <th className="p-4 pr-6 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {returnRequests
+                          .filter((req) => {
+                            if (returnRequestsFilterStatus !== "All" && req.status !== returnRequestsFilterStatus) return false
+                            if (returnRequestsSearch) {
+                              const s = returnRequestsSearch.toLowerCase()
+                              return (
+                                req.orderNumber.toLowerCase().includes(s) ||
+                                req.customerName.toLowerCase().includes(s) ||
+                                req.email.toLowerCase().includes(s) ||
+                                req.reason.toLowerCase().includes(s)
+                              )
+                            }
+                            return true
+                          })
+                          .map((req) => {
+                            // Status Classes
+                            let statusClass = ""
+                            if (req.status === "Pending") statusClass = "bg-amber-55 text-amber-700 border-amber-200 animate-pulse-subtle"
+                            else if (req.status === "Approved") statusClass = "bg-blue-50 text-blue-700 border-blue-200"
+                            else if (req.status === "Rejected") statusClass = "bg-rose-50 text-rose-700 border-rose-200"
+                            else if (req.status === "Refunded") statusClass = "bg-emerald-50 text-emerald-700 border-emerald-200"
+
+                            // Time window check
+                            let windowBadge = null
+                            if (req.orderId && req.orderId.updatedAt) {
+                              const deliveryTime = new Date(req.orderId.updatedAt).getTime()
+                              const requestTime = new Date(req.createdAt).getTime()
+                              const diffHrs = (requestTime - deliveryTime) / (1000 * 60 * 60)
+                              if (diffHrs <= 24) {
+                                windowBadge = (
+                                  <span className="bg-emerald-50 text-emerald-750 border border-emerald-200 text-[9px] font-bold px-2 py-0.5 rounded-full inline-block">
+                                    Within 24h ({diffHrs.toFixed(1)}h)
+                                  </span>
+                                )
+                              } else {
+                                windowBadge = (
+                                  <span className="bg-rose-50 text-rose-750 border border-rose-200 text-[9px] font-bold px-2 py-0.5 rounded-full inline-block">
+                                    EXCEEDS 24h ({diffHrs.toFixed(1)}h)
+                                  </span>
+                                )
+                              }
+                            } else {
+                              windowBadge = <span className="text-slate-400">N/A (Legacy Order)</span>
+                            }
+
+                            return (
+                              <tr key={req._id} className="border-b border-slate-50 last:border-0 hover:bg-slate-50/30">
+                                <td className="p-4 pl-6 text-slate-400 text-[10px] whitespace-nowrap">
+                                  {new Date(req.createdAt).toLocaleDateString()}<br />
+                                  {new Date(req.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </td>
+                                <td className="p-4 font-sans">
+                                  <h4 className="text-slate-800 font-bold">{req.customerName}</h4>
+                                  <p className="text-[10px] text-slate-400 mt-0.5">{req.email}</p>
+                                  <p className="text-[10px] text-slate-400 mt-0.5">📞 {req.phoneNumber}</p>
+                                </td>
+                                <td className="p-4 font-mono font-bold text-[10px] text-slate-700">
+                                  {req.orderNumber}
+                                </td>
+                                <td className="p-4 max-w-xs font-sans">
+                                  <h5 className="font-bold text-slate-800">{req.reason}</h5>
+                                  <p className="text-slate-500 font-normal leading-normal text-[10px] line-clamp-2 mt-0.5" title={req.description}>
+                                    {req.description}
+                                  </p>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex gap-1.5 overflow-x-auto max-w-[120px] pb-1">
+                                    {req.images && req.images.map((img, idx) => (
+                                      <a
+                                        key={idx}
+                                        href={getImageUrl(img)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-8 h-8 rounded border border-slate-100 bg-slate-50 overflow-hidden flex-shrink-0 flex items-center justify-center cursor-zoom-in"
+                                      >
+                                        <img src={getImageUrl(img)} alt="Return Product" className="max-h-full max-w-full object-contain" />
+                                      </a>
+                                    ))}
+                                  </div>
+                                </td>
+                                <td className="p-4 font-semibold text-[10px]">
+                                  {windowBadge}
+                                </td>
+                                <td className="p-4">
+                                  <span className={`px-2.5 py-1 rounded-full text-[9px] font-black tracking-wider border ${statusClass}`}>
+                                    {req.status}
+                                  </span>
+                                </td>
+                                <td className="p-4 pr-6 text-right space-x-1.5 whitespace-nowrap">
+                                  <button
+                                    onClick={() => {
+                                      setSelectedReturnRequest(req)
+                                      setIsReturnRequestModalOpen(true)
+                                    }}
+                                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-750 rounded text-[10px] font-bold transition-all cursor-pointer"
+                                  >
+                                    View Details
+                                  </button>
+                                </td>
+                              </tr>
+                            )
+                          })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+
           </div>
         )}
       </div>
@@ -1037,6 +1273,208 @@ export default function AdminDashboard({ activeTab = "overview" }) {
               </div>
 
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* REJECTION MODAL */}
+      {isRejectionModalOpen && selectedReturnRequest && (
+        <div className="fixed inset-0 z-[60] overflow-y-auto flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsRejectionModalOpen(false)} />
+          <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 z-10 space-y-4 border border-slate-100 animate-fade-in-up">
+            <div>
+              <h3 className="text-lg font-bold text-slate-800">Reject Return Request</h3>
+              <p className="text-xs text-slate-400 mt-1">Please provide a clear reason for rejecting this refund/return request.</p>
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">Rejection Reason</label>
+              <textarea
+                value={adminRejectionReason}
+                onChange={(e) => setAdminRejectionReason(e.target.value)}
+                placeholder="e.g. Uploaded photos are blurry; Submitted after 24 hours of delivery..."
+                rows={3}
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-brand-blue text-slate-700 font-medium"
+                required
+              />
+            </div>
+            <div className="flex justify-end gap-3 pt-2">
+              <button
+                onClick={() => {
+                  setIsRejectionModalOpen(false)
+                  setAdminRejectionReason("")
+                }}
+                className="px-4 py-2 border border-slate-200 text-slate-650 rounded-lg text-xs font-bold hover:bg-slate-50 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (!adminRejectionReason.trim()) {
+                    showToast("Please enter a reason", "warning")
+                    return
+                  }
+                  handleReturnRequestStatusChange(selectedReturnRequest._id, "Rejected", adminRejectionReason.trim())
+                  setIsRejectionModalOpen(false)
+                  setAdminRejectionReason("")
+                }}
+                className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-xs font-bold shadow-sm cursor-pointer"
+              >
+                Reject Request
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RETURN REQUEST DETAILS MODAL */}
+      {isReturnRequestModalOpen && selectedReturnRequest && (
+        <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsReturnRequestModalOpen(false)} />
+          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl p-6 sm:p-8 z-10 space-y-6 border border-slate-100 animate-fade-in-up">
+            
+            <div className="flex justify-between items-start border-b pb-4">
+              <div>
+                <h3 className="text-xl font-bold text-slate-805">Return Request Details</h3>
+                <p className="text-xs text-slate-400 mt-1">Submitted on {new Date(selectedReturnRequest.createdAt).toLocaleString()}</p>
+              </div>
+              <span className={`px-2.5 py-1 rounded-full text-[9px] font-black tracking-wider border ${
+                selectedReturnRequest.status === "Pending" ? "bg-amber-50 text-amber-700 border-amber-200" :
+                selectedReturnRequest.status === "Approved" ? "bg-blue-50 text-blue-700 border-blue-200" :
+                selectedReturnRequest.status === "Rejected" ? "bg-rose-50 text-rose-700 border-rose-200" :
+                "bg-emerald-50 text-emerald-700 border-emerald-200"
+              }`}>
+                {selectedReturnRequest.status}
+              </span>
+            </div>
+
+            {/* Content Details */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold text-slate-650">
+              
+              <div className="space-y-1">
+                <span className="text-slate-400 uppercase tracking-widest text-[9px]">Customer Name</span>
+                <p className="text-slate-808 font-bold">{selectedReturnRequest.customerName}</p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 uppercase tracking-widest text-[9px]">Contact Details</span>
+                <p className="text-slate-808 font-bold">{selectedReturnRequest.phoneNumber} | {selectedReturnRequest.email}</p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 uppercase tracking-widest text-[9px]">Order Reference / ID</span>
+                <p className="text-slate-808 font-mono font-bold">{selectedReturnRequest.orderNumber}</p>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 uppercase tracking-widest text-[9px]">Reason for Return</span>
+                <p className="text-rose-600 font-bold">{selectedReturnRequest.reason}</p>
+              </div>
+
+              <div className="sm:col-span-2 space-y-1">
+                <span className="text-slate-400 uppercase tracking-widest text-[9px]">Customer Description</span>
+                <p className="text-slate-700 font-normal leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-100 whitespace-pre-wrap">
+                  {selectedReturnRequest.description}
+                </p>
+              </div>
+
+              {selectedReturnRequest.status === "Rejected" && selectedReturnRequest.rejectionReason && (
+                <div className="sm:col-span-2 space-y-1 bg-rose-50 border border-rose-100 rounded-lg p-3">
+                  <span className="text-rose-500 uppercase tracking-widest text-[9px] font-bold">Admin Rejection Reason</span>
+                  <p className="text-rose-800 font-medium mt-0.5">{selectedReturnRequest.rejectionReason}</p>
+                </div>
+              )}
+
+              {/* Timeframe Warning Banner */}
+              <div className="sm:col-span-2">
+                <span className="text-slate-400 uppercase tracking-widest text-[9px] block mb-1">Timeframe Validation</span>
+                {selectedReturnRequest.orderId && selectedReturnRequest.orderId.updatedAt ? (() => {
+                  const deliveryTime = new Date(selectedReturnRequest.orderId.updatedAt).getTime()
+                  const requestTime = new Date(selectedReturnRequest.createdAt).getTime()
+                  const diffHrs = (requestTime - deliveryTime) / (1000 * 60 * 60)
+                  const valid = diffHrs <= 24
+                  return (
+                    <div className={`p-3 border rounded-xl flex items-center justify-between text-xs ${valid ? "bg-emerald-50 border-emerald-100 text-emerald-800" : "bg-rose-50 border-rose-100 text-rose-800"}`}>
+                      <span>Order Delivery Date: <span className="font-bold">{new Date(selectedReturnRequest.orderId.updatedAt).toLocaleString()}</span></span>
+                      <span className="font-extrabold uppercase tracking-wide">{valid ? "✓ Valid (Within 24h)" : "⚠ Late Submission (>24h)"}</span>
+                    </div>
+                  )
+                })() : (
+                  <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl text-slate-500 text-xs">
+                    Order delivery time stamp not available (Legacy Order).
+                  </div>
+                )}
+              </div>
+
+              {/* Customer Images */}
+              <div className="sm:col-span-2 space-y-2">
+                <span className="text-slate-400 uppercase tracking-widest text-[9px]">Uploaded Photos ({selectedReturnRequest.images?.length || 0})</span>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  {selectedReturnRequest.images && selectedReturnRequest.images.map((img, idx) => (
+                    <a
+                      key={idx}
+                      href={getImageUrl(img)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="aspect-square bg-slate-50 border border-slate-150 rounded-xl overflow-hidden flex items-center justify-center cursor-zoom-in group relative hover:border-brand-blue"
+                    >
+                      <img src={getImageUrl(img)} alt="Damaged product" className="max-h-full max-w-full object-contain" />
+                      <span className="absolute bottom-0 left-0 right-0 bg-slate-900/60 text-white text-[8px] text-center py-0.5 opacity-0 group-hover:opacity-100 transition-opacity">Zoom</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Actions Bar */}
+            <div className="flex flex-wrap gap-3 justify-end pt-4 border-t">
+              <button
+                onClick={() => {
+                  setIsReturnRequestModalOpen(false)
+                  setSelectedReturnRequest(null)
+                }}
+                className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+
+              {selectedReturnRequest.status === "Pending" && (
+                <>
+                  <button
+                    onClick={() => {
+                      if (window.confirm("Are you sure you want to APPROVE this return request? This will mark it as ready for refund.")) {
+                        handleReturnRequestStatusChange(selectedReturnRequest._id, "Approved")
+                      }
+                    }}
+                    className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-bold transition-colors shadow-sm cursor-pointer"
+                  >
+                    Approve Request
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsRejectionModalOpen(true)
+                    }}
+                    className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg text-xs font-bold transition-colors shadow-sm cursor-pointer"
+                  >
+                    Reject Request
+                  </button>
+                </>
+              )}
+
+              {selectedReturnRequest.status === "Approved" && (
+                <button
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to mark this request as REFUNDED?")) {
+                      handleReturnRequestStatusChange(selectedReturnRequest._id, "Refunded")
+                    }
+                  }}
+                  className="px-4 py-2 bg-emerald-500 hover:bg-emerald-650 text-white rounded-lg text-xs font-bold transition-colors shadow-sm cursor-pointer"
+                >
+                  Mark as Refunded
+                </button>
+              )}
+            </div>
+
           </div>
         </div>
       )}

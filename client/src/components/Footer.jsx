@@ -85,6 +85,7 @@ export default function Footer({ onSelectCategory }) {
                 { name: 'Home', path: '/' },
                 { name: 'Products', path: '/products' },
                 { name: 'About Us', path: '/about' },
+                { name: 'Return / Refund Request', path: '/return-request' },
                 { name: 'FAQs', sectionId: 'faq' },
                 { name: 'Contact Form', sectionId: 'contact-us' }
               ].map((link) => (
@@ -151,7 +152,18 @@ export default function Footer({ onSelectCategory }) {
 
         {/* Bottom Banner */}
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold">
-          <p>© 2026 Well Clean Solutions. All Rights Reserved.</p>
+          <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+            <p>© 2026 Well Clean Solutions. All Rights Reserved.</p>
+            <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-[11px] text-slate-500 font-semibold">
+              <button onClick={() => handleLinkClick('/privacy-policy')} className="hover:text-white hover:underline cursor-pointer transition-all">Privacy Policy</button>
+              <span>•</span>
+              <button onClick={() => handleLinkClick('/terms-conditions')} className="hover:text-white hover:underline cursor-pointer transition-all">Terms & Conditions</button>
+              <span>•</span>
+              <button onClick={() => handleLinkClick('/shipping-policy')} className="hover:text-white hover:underline cursor-pointer transition-all">Shipping Policy</button>
+              <span>•</span>
+              <button onClick={() => handleLinkClick('/refund-policy')} className="hover:text-white hover:underline cursor-pointer transition-all">Refund & Cancellation</button>
+            </div>
+          </div>
           <p className="flex items-center gap-1 text-[10px] text-slate-500">
             Made with <FiHeart className="text-rose-500 fill-rose-500" /> for clean and healthy living.
           </p>

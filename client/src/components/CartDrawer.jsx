@@ -17,7 +17,7 @@ export default function CartDrawer({ isOpen, onClose, onOpenLogin }) {
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
   const discountAmount = subtotal * (appliedDiscount / 100)
-  const shipping = subtotal > 50 || subtotal === 0 ? 0 : 5.99
+  const shipping = subtotal > 99 || subtotal === 0 ? 0 : 5.99
   const total = subtotal - discountAmount + shipping
 
   const handleApplyPromo = (e) => {
@@ -185,7 +185,7 @@ export default function CartDrawer({ isOpen, onClose, onOpenLogin }) {
                   <span>{shipping === 0 ? <strong className="text-brand-green uppercase">FREE</strong> : `₹${shipping.toFixed(2)}`}</span>
                 </div>
                 {shipping > 0 && (
-                  <p className="text-[10px] text-slate-400 text-right">Add ₹{(50 - subtotal).toFixed(2)} more for FREE shipping</p>
+                  <p className="text-[10px] text-slate-400 text-right">Add ₹{(99 - subtotal).toFixed(2)} more for FREE shipping</p>
                 )}
                 <div className="border-t border-slate-200 pt-2 flex justify-between text-base font-black text-slate-800">
                   <span>Total</span>

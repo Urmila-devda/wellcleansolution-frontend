@@ -17,6 +17,11 @@ import TrackOrder from "./pages/TrackOrder"
 import About from "./pages/About"
 import PaymentSuccess from "./pages/PaymentSuccess"
 import PaymentFailed from "./pages/PaymentFailed"
+import ReturnRequest from "./pages/ReturnRequest"
+import RefundPolicy from "./pages/RefundPolicy"
+import PrivacyPolicy from "./pages/PrivacyPolicy"
+import TermsConditions from "./pages/TermsConditions"
+import ShippingPolicy from "./pages/ShippingPolicy"
 
 // Routing wrapper
 import ProtectedRoute from "./components/ProtectedRoute"
@@ -123,6 +128,18 @@ function AppContent() {
             )
           }
         />
+        <Route
+          path="/return-request"
+          element={
+            <ProtectedRoute>
+              <UserRouteWrapper Component={ReturnRequest} />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/refund-policy" element={<UserRouteWrapper Component={RefundPolicy} />} />
+        <Route path="/privacy-policy" element={<UserRouteWrapper Component={PrivacyPolicy} />} />
+        <Route path="/terms-conditions" element={<UserRouteWrapper Component={TermsConditions} />} />
+        <Route path="/shipping-policy" element={<UserRouteWrapper Component={ShippingPolicy} />} />
         {/* Redirect any other user routes to Home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
@@ -141,6 +158,7 @@ function AppContent() {
         <Route path="products" element={<AdminDashboard activeTab="products" />} />
         <Route path="orders" element={<AdminDashboard activeTab="orders" />} />
         <Route path="enquiries" element={<AdminDashboard activeTab="enquiries" />} />
+        <Route path="return-requests" element={<AdminDashboard activeTab="return-requests" />} />
       </Route>
     </Routes>
   )

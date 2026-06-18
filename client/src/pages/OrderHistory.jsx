@@ -134,9 +134,19 @@ export default function OrderHistory() {
                 </div>
 
                 {/* Shipping info footer */}
-                <div className="bg-slate-50/20 px-6 py-3 border-t border-slate-100 text-[10px] text-slate-400 flex items-center gap-2">
-                  <span className="font-bold text-slate-500">Shipping To:</span>
-                  <span>{order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zip}</span>
+                <div className="bg-slate-50/20 px-6 py-3 border-t border-slate-100 text-[10px] text-slate-400 flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-500">Shipping To:</span>
+                    <span>{order.shippingAddress.street}, {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zip}</span>
+                  </div>
+                  {order.orderStatus === "Delivered" && (
+                    <button
+                      onClick={() => navigate(`/return-request?orderNumber=${order.orderNumber || order._id}`)}
+                      className="px-3 py-1.5 bg-brand-soft-blue text-brand-blue hover:bg-brand-blue hover:text-white rounded-lg font-bold text-[9px] uppercase tracking-widest transition-all cursor-pointer border-0"
+                    >
+                      Request Return/Refund
+                    </button>
+                  )}
                 </div>
 
               </div>

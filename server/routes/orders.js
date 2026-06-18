@@ -64,8 +64,8 @@ router.post("/", protect, async (req, res) => {
     if (req.body.couponCode === "WELCOME25") {
       finalTotal = computedTotal * 0.75 // 25% off
     }
-    // Add shipping: subtotal > 50 ? 0 : 5.99
-    const shipping = finalTotal > 50 ? 0 : 5.99
+    // Add shipping: subtotal > 99 ? 0 : 5.99
+    const shipping = finalTotal > 99 ? 0 : 5.99
     finalTotal += shipping
 
     // Create the Order

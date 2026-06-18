@@ -71,4 +71,15 @@ export const enquiriesAPI = {
   updateStatus: (id, status) => API.put(`/enquiries/${id}/status`, { status }),
 }
 
+export const returnsAPI = {
+  submit: (formData) => API.post("/return-requests", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  }),
+  getMyRequests: () => API.get("/return-requests/my-requests"),
+  getAllAdmin: () => API.get("/return-requests"),
+  updateStatus: (id, status, rejectionReason) => API.put(`/return-requests/${id}/status`, { status, rejectionReason }),
+}
+
 export default API

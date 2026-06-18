@@ -131,8 +131,8 @@ router.post("/verify-payment", protect, async (req, res) => {
       finalTotal = computedTotal * 0.75 // 25% off
     }
 
-    // Add shipping rule: order value > 50 ? 0 : 5.99
-    const shipping = finalTotal > 50 ? 0 : 5.99
+    // Add shipping rule: order value > 99 ? 0 : 5.99
+    const shipping = finalTotal > 99 ? 0 : 5.99
     finalTotal += shipping
     finalTotal = Number(finalTotal.toFixed(2))
 

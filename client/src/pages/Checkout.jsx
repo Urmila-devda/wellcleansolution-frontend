@@ -59,7 +59,7 @@ export default function Checkout() {
 
   const discountAmount = subtotal * (appliedDiscount / 100)
   const afterDiscount = subtotal - discountAmount
-  const shipping = afterDiscount > 50 || subtotal === 0 ? 0 : 5.99
+  const shipping = afterDiscount > 99 || subtotal === 0 ? 0 : 5.99
   const total = afterDiscount + shipping
 
   const handleSubmit = async (e) => {

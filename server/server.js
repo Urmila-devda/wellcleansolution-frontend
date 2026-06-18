@@ -60,6 +60,7 @@ app.use("/api/cart", require("./routes/cart"))
 app.use("/api/orders", require("./routes/orders"))
 app.use("/api/payment", require("./routes/payment"))
 app.use("/api/enquiries", require("./routes/enquiries"))
+app.use("/api/return-requests", require("./routes/returnRequests"))
 
 app.get("/", (req, res) => {
   res.send("API Running")
