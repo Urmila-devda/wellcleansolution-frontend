@@ -6,7 +6,7 @@ const features = [
     id: 'quality',
     icon: <FiAward />,
     title: 'High Quality Products',
-    desc: 'Formulated with premium biodegradable agents and natural botanical concentrates to deliver professional, industrial-grade hygiene.',
+    desc: 'Formulated with premium active agents and natural concentrates to deliver professional, industrial-grade hygiene.',
     colorBg: 'bg-brand-soft-blue text-brand-blue',
     hoverGlow: 'hover:shadow-brand-blue/10 hover:border-brand-blue/30'
   },
@@ -14,7 +14,7 @@ const features = [
     id: 'trusted',
     icon: <FiUsers />,
     title: 'Trusted by Customers',
-    desc: 'With verified 4.9/5 star ratings across thousands of households, we are Thane\'s chosen name for eco-safe sanitation.',
+    desc: 'With verified 4.9/5 star ratings across thousands of households, we are Thane\'s chosen name for safe sanitation.',
     colorBg: 'bg-brand-soft-green text-brand-green',
     hoverGlow: 'hover:shadow-brand-green/10 hover:border-brand-green/30'
   },
@@ -50,7 +50,7 @@ export default function WhyChooseUs() {
             Why Choose Well Clean Solutions
           </h2>
           <p className="text-sm sm:text-base text-slate-550 max-w-xl mx-auto font-semibold">
-            We bridge the gap between heavy-duty cleaning science and eco-friendly family safety, ensuring clean spaces with total peace of mind.
+            We bridge the gap between heavy-duty cleaning science and family safety, ensuring clean spaces with total peace of mind.
           </p>
         </div>
 

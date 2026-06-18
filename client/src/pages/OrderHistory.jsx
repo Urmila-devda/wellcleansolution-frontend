@@ -74,7 +74,7 @@ export default function OrderHistory() {
               <FiClock />
             </div>
             <h3 className="text-base font-bold text-slate-700 mb-1">No orders yet</h3>
-            <p className="text-xs text-slate-400 mb-6 max-w-xs mx-auto">Once you check out, you'll be able to view and track your eco-friendly orders right here.</p>
+            <p className="text-xs text-slate-400 mb-6 max-w-xs mx-auto">Once you check out, you'll be able to view and track your orders right here.</p>
             <button
               onClick={() => navigate("/")}
               className="px-6 py-2.5 bg-brand-blue text-white rounded-full text-xs font-bold hover:bg-brand-blue-hover transition-all"

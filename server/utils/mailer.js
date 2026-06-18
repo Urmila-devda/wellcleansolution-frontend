@@ -103,7 +103,7 @@ const generateOrderHtml = (order, user, isAdminAlert = false) => {
         `
             : `
           <p>Dear ${user.name},</p>
-          <p>Thank you for shopping with WellClean! Your order has been successfully placed. We are preparing your eco-friendly hygiene products for delivery.</p>
+          <p>Thank you for shopping with WellClean! Your order has been successfully placed. We are preparing your hygiene products for delivery.</p>
           ${order.orderNumber ? `<p><strong>Order Number:</strong> ${order.orderNumber}</p>` : ""}
           <p><strong>Order ID:</strong> ${order._id}</p>
           ${order.razorpayPaymentId ? `<p><strong>Payment ID:</strong> ${order.razorpayPaymentId}</p>` : ""}

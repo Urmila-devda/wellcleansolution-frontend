@@ -42,7 +42,7 @@ export default function TermsConditions() {
               <h2 className="text-base font-bold text-slate-850">1. Product Usage & Catalog</h2>
             </div>
             <p>
-              We manufacture professional-grade eco-friendly cleaning concentrates. Products must be diluted and used strictly in accordance with the instructions printed on the packaging. Well Clean Solutions is not liable for damage resulting from misuse or incorrect application.
+              We manufacture professional-grade cleaning concentrates. Products must be diluted and used strictly in accordance with the instructions printed on the packaging. Well Clean Solutions is not liable for damage resulting from misuse or incorrect application.
             </p>
           </div>
 

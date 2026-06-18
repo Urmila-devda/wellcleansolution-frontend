@@ -22,7 +22,7 @@ export default function Home({
     if (metaDesc) {
       metaDesc.setAttribute(
         "content",
-        "Welcome to WellClean Solutions - premium eco-friendly cleaning and hygiene products for sparkling clean homes and germ protection."
+        "Welcome to WellClean Solutions - premium cleaning and hygiene products for sparkling clean homes and germ protection."
       )
     }
   }, [])

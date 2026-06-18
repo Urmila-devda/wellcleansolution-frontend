@@ -16,7 +16,7 @@ const reviews = [
     location: 'San Francisco, CA',
     avatar: '👨‍💻',
     rating: 5,
-    quote: 'With two toddlers in the house, eco-friendly and non-toxic cleaning is my top priority. Well Clean Solutions floor wash and multi-surface sprays work wonders on tough stains and give me peace of mind about safety.'
+    quote: 'With two toddlers in the house, safe and non-toxic cleaning is my top priority. Well Clean Solutions floor wash and multi-surface sprays work wonders on tough stains and give me peace of mind about safety.'
   },
   {
     id: 3,

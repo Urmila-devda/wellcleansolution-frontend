@@ -361,7 +361,7 @@ export default function ProductDetails({ onAddToCart }) {
                     <div className="p-4 bg-slate-50/50 rounded-xl border border-slate-100">
                       <p className="text-slate-550 font-bold uppercase tracking-wider text-[10px] mb-2 text-slate-400">Formulation Active Agents:</p>
                       <p className="italic text-slate-600 font-bold leading-relaxed">
-                        {product.ingredients || "Purified botanical water, Eco-certified organic surfactants, plant-derived soil penetrants, natural pine essence oils."}
+                        {product.ingredients || "Purified water, organic surfactants, soil penetrants, natural pine essence oils."}
                       </p>
                     </div>
                   )}
@@ -502,7 +502,7 @@ export default function ProductDetails({ onAddToCart }) {
                 </span>
                 <span className="flex items-center gap-1.5">
                   <FiHeart className="text-rose-500 fill-rose-500 text-sm" />
-                  <span>100% Eco-Friendly Concentrate</span>
+                  <span>100% High-Performance Concentrate</span>
                 </span>
               </div>
 

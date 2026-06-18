@@ -238,7 +238,7 @@ export default function Checkout() {
                   <input
                     type="text"
                     required
-                    placeholder="123 Eco Way, Apt 4B"
+                    placeholder="123 Clean Way, Apt 4B"
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
                     className="w-full px-3 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-brand-blue/50 text-slate-800"
@@ -391,7 +391,7 @@ export default function Checkout() {
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span>Eco-Shipping</span>
+                  <span>Standard Shipping</span>
                   <span>{shipping === 0 ? <strong className="text-brand-green uppercase">FREE</strong> : `₹${shipping.toFixed(2)}`}</span>
                 </div>
                 <div className="border-t border-slate-200 pt-3 flex justify-between text-sm font-black text-slate-800">
@@ -400,9 +400,9 @@ export default function Checkout() {
                 </div>
               </div>
 
-              {/* Eco Note */}
+              {/* Shipping Note */}
               <div className="bg-brand-soft-green/50 p-4 rounded-xl border border-brand-green/10 text-[10px] text-brand-green-hover leading-relaxed">
-                🍀 <strong>Green Shipping Guarantee:</strong> We pack all cleaning detergents in biodegradable boxes using paper tape and soy-based inks. Zero single-use plastics!
+                📦 <strong>Secure Shipping Guarantee:</strong> We pack all cleaning detergents in durable boxes using reinforced tape to ensure safe transit. Zero damage guarantee!
               </div>
 
             </div>

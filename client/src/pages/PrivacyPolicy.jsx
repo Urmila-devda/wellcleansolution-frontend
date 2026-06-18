@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
         <div className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8 text-xs text-slate-500 leading-relaxed font-semibold">
           
           <p>
-            Well Clean Solutions ("we," "our," or "us") values your privacy. This Privacy Policy details how we collect, use, and safeguard your personal information when you use our website or purchase our eco-friendly cleaning concentrates.
+            Well Clean Solutions ("we," "our," or "us") values your privacy. This Privacy Policy details how we collect, use, and safeguard your personal information when you use our website or purchase our cleaning concentrates.
           </p>
 
           {/* Section 1 */}

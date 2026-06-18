@@ -320,7 +320,7 @@ export default function AdminDashboard({ activeTab = "overview" }) {
         stock,
         specs: [
           { name: "Bottle Volume", value: prodSize },
-          { name: "Eco Rating", value: "Bio-certified" },
+          { name: "Safety Rating", value: "Bio-certified" },
         ],
         ingredients: selectedProduct?.ingredients || "Water-based natural active enzymes.",
         size: prodSize,

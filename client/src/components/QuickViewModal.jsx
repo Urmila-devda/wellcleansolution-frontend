@@ -113,7 +113,7 @@ export default function QuickViewModal({ isOpen, onClose, product, onAddToCart }
                   </ul>
                 )}
                 {activeTab === 'ingredients' && (
-                  <p className="leading-relaxed italic text-slate-500 text-xs">{product.ingredients || 'Naturally derived biodegradable surfactant system, essential oil fragrance, purified water.'}</p>
+                  <p className="leading-relaxed italic text-slate-500 text-xs">{product.ingredients || 'Naturally derived surfactant system, essential oil fragrance, purified water.'}</p>
                 )}
               </div>
             </div>
@@ -213,7 +213,7 @@ export default function QuickViewModal({ isOpen, onClose, product, onAddToCart }
                 </span>
                 <span className="flex items-center gap-1">
                   <FiHeart className="text-rose-500 fill-rose-500" />
-                  <span>Eco-Friendly Formula</span>
+                  <span>Advanced Formula</span>
                 </span>
               </div>
             </div>

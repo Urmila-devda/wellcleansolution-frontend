@@ -58,7 +58,7 @@ export default function PromoBanner({ onApplyCoupon }) {
               Cleaning Essentials
             </h2>
             <p className="text-white/80 text-sm font-medium">
-              Save big on premium sanitizers, toilet cleaners, floor washes, and eco-friendly kitchen liquids. Pure hygiene, pure savings.
+              Save big on premium sanitizers, toilet cleaners, floor washes, and grease-cutting kitchen liquids. Pure hygiene, pure savings.
             </p>
             
             {/* Promo Code Box */}

@@ -4,7 +4,7 @@ import aboutHome from '../assets/about_home.png';
 
 export default function AboutUs() {
   const bulletPoints = [
-    '100% biodegradable active cleaning agents',
+    'Highly effective active cleaning agents',
     'Tough on stains, safe for toddlers and pets',
     'Certified 99.9% germ protection formulas',
     'Proudly manufactured with cruelty-free practices'
@@ -26,7 +26,7 @@ export default function AboutUs() {
                 Cleaner Lifestyle
               </h2>
               <p className="text-sm sm:text-base text-slate-500 leading-relaxed">
-                Well Clean Solutions is dedicated to providing high-quality cleaning and hygiene products that help families maintain a healthier and cleaner lifestyle. We believe that clean living leads to better living, which is why we research and formulate eco-conscious detergents that deliver outstanding performance without compromise.
+                Well Clean Solutions is dedicated to providing high-quality cleaning and hygiene products that help families maintain a healthier and cleaner lifestyle. We believe that clean living leads to better living, which is why we research and formulate high-performance detergents that deliver outstanding performance without compromise.
               </p>
             </div>
 

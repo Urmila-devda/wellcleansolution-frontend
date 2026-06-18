@@ -162,7 +162,7 @@ export default function LoginModal({ isOpen, onClose }) {
                   <p className="text-xs text-slate-400 mt-1">
                     {isLoginTab
                       ? "Access your Well Clean Solutions orders and tracking"
-                      : "Join us to shop premium eco-cleaning products"}
+                      : "Join us to shop premium cleaning products"}
                   </p>
                 </div>
 

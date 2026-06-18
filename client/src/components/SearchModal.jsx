@@ -68,7 +68,7 @@ export default function SearchModal({ isOpen, onClose, products, onQuickView }) 
               <div>
                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Popular Searches</h4>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {['Hand Wash', 'Toilet Cleaner', 'Eco-friendly', 'Glass Cleaner', 'Floor Cleaner'].map((term) => (
+                  {['Hand Wash', 'Toilet Cleaner', 'All Purpose', 'Glass Cleaner', 'Floor Cleaner'].map((term) => (
                     <button
                       key={term}
                       onClick={() => setQuery(term)}

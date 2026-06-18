@@ -50,7 +50,7 @@ export default function Hero() {
 
             {/* Subheading copy */}
             <p className="text-sm sm:text-base text-slate-500 font-semibold leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Discover eco-friendly, professional-grade cleaning formulations designed to protect your family from germs while respecting the planet. Pure hygiene with zero compromises.
+              Discover high-performance, professional-grade cleaning formulations designed to protect your family from germs while keeping your home spotless. Pure hygiene with zero compromises.
             </p>
 
             {/* Direct Action CTAs */}
@@ -82,7 +82,7 @@ export default function Hero() {
               <div className="flex items-center gap-2.5">
                 <FiSmile className="text-brand-blue text-xl flex-shrink-0" />
                 <div>
-                  <p className="text-xs font-black text-slate-850">Eco-Safe</p>
+                  <p className="text-xs font-black text-slate-850">Non-Toxic</p>
                   <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Formulations</p>
                 </div>
               </div>

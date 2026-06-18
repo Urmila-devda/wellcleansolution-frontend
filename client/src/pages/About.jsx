@@ -10,7 +10,7 @@ export default function About() {
     if (metaDesc) {
       metaDesc.setAttribute(
         "content",
-        "Learn about WellClean Solutions - our commitment to premium, family-safe, and eco-friendly cleaning formulations that protect your home."
+        "Learn about WellClean Solutions - our commitment to premium, family-safe cleaning formulations that protect your home."
       )
     }
   }, [])
@@ -28,13 +28,13 @@ export default function About() {
     },
     {
       icon: <FiHeart className="text-xl text-rose-500" />,
-      title: "Eco-Conscious Integrity",
-      desc: "We stand by 100% biodegradable active agents, cruelty-free practices, and recyclable packaging to respect our environment.",
+      title: "Quality Integrity",
+      desc: "We stand by premium active agents, cruelty-free practices, and secure packaging to respect our customers.",
     },
   ]
 
   const bulletPoints = [
-    "100% biodegradable active cleaning agents",
+    "Highly effective active cleaning agents",
     "Tough on stains, safe for toddlers and pets",
     "Certified 99.9% germ protection formulas",
     "Proudly manufactured with cruelty-free practices",
@@ -52,7 +52,7 @@ export default function About() {
           </span>
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">About Well Clean Solutions</h1>
           <p className="text-slate-400 text-sm sm:text-base max-w-xl mx-auto font-medium">
-            Discover our journey in redefining home hygiene with safe, highly effective, and eco-friendly cleaning concentrates.
+            Discover our journey in redefining home hygiene with safe, highly effective cleaning concentrates.
           </p>
         </div>
       </div>
@@ -72,7 +72,7 @@ export default function About() {
                 Cleaner Lifestyle
               </h2>
               <p className="text-sm sm:text-base text-slate-500 leading-relaxed font-medium">
-                Well Clean Solutions is committed to providing professional-grade cleaning and hygiene products that help families maintain a healthier and cleaner lifestyle. We believe that clean living leads to better living, which is why we research and formulate eco-conscious detergents that deliver outstanding performance without compromise.
+                Well Clean Solutions is committed to providing professional-grade cleaning and hygiene products that help families maintain a healthier and cleaner lifestyle. We believe that clean living leads to better living, which is why we research and formulate high-performance detergents that deliver outstanding performance without compromise.
               </p>
             </div>
 
@@ -129,7 +129,7 @@ export default function About() {
               Values That Drive Us Forward
             </h2>
             <p className="text-sm text-slate-400 font-medium">
-              We operate on the foundation of trust, scientific efficiency, and environmental responsibility.
+              We operate on the foundation of trust, scientific efficiency, and safety.
             </p>
           </div>
 

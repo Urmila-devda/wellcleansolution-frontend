@@ -25,7 +25,7 @@ const products = [
     stock: 50,
     specs: [
       { name: "Bottle Volume", value: "500 ml" },
-      { name: "Eco Rating", value: "99.9% Biodegradable" },
+      { name: "Safety Rating", value: "99.9% Biodegradable" },
       { name: "Fragrance", value: "Lavender Mint" }
     ],
     ingredients: "Aqua (water), Coco-Glucoside, Aloe Barbadensis leaf juice, Melaleuca Alternifolia (tea tree) oil, Lavender oil, Citric acid."
@@ -43,7 +43,7 @@ const products = [
     stock: 50,
     specs: [
       { name: "Bottle Volume", value: "750 ml" },
-      { name: "Eco Rating", value: "Safe for septic systems" },
+      { name: "Safety Rating", value: "Safe for septic systems" },
       { name: "Fragrance", value: "Pine Breeze" }
     ],
     ingredients: "Purified Water, Citric acid, Xanthan gum, Alkyl polyglucoside, Natural essential pine oil."
@@ -61,7 +61,7 @@ const products = [
     stock: 50,
     specs: [
       { name: "Bottle Volume", value: "500 ml" },
-      { name: "Eco Rating", value: "Ammonia-free formulation" },
+      { name: "Safety Rating", value: "Ammonia-free formulation" },
       { name: "Fragrance", value: "Fresh Citrus" }
     ],
     ingredients: "Purified Water, Bio-Ethanol (derived from corn), Decyl glucoside, Lemon essential oil."
@@ -79,7 +79,7 @@ const products = [
     stock: 50,
     specs: [
       { name: "Bottle Volume", value: "1000 ml" },
-      { name: "Eco Rating", value: "Concentrated formula" },
+      { name: "Safety Rating", value: "Concentrated formula" },
       { name: "Fragrance", value: "Ocean Lavender" }
     ],
     ingredients: "Purified Water, Sodium methyl cocoyl taurate, Coconut fatty acid, Organic lavender essential oil."
@@ -97,7 +97,7 @@ const products = [
     stock: 50,
     specs: [
       { name: "Bottle Volume", value: "650 ml" },
-      { name: "Eco Rating", value: "Phosphate & SLS free" },
+      { name: "Safety Rating", value: "Phosphate & SLS free" },
       { name: "Fragrance", value: "Zesty Lemon" }
     ],
     ingredients: "Purified Water, Coco betaine, Lemon peel oil extract, Citric acid, Glycerin (vegetable derived)."
@@ -115,7 +115,7 @@ const products = [
     stock: 50,
     specs: [
       { name: "Bottle Volume", value: "500 ml" },
-      { name: "Eco Rating", value: "Zero harsh fumes, 100% natural" },
+      { name: "Safety Rating", value: "Zero harsh fumes, 100% natural" },
       { name: "Fragrance", value: "Eucalyptus Mint" }
     ],
     ingredients: "Purified Water, Caprylyl/Capryl glucoside, Organic eucalyptus oil, Peppermint essential oil."
@@ -203,7 +203,7 @@ const seedDatabase = async () => {
         totalAmount: orderAmounts[i],
         shippingAddress: {
           street: "123 Green Ave",
-          city: "Eco Town",
+          city: "West Town",
           state: "CA",
           zip: "90210",
           country: "USA",
