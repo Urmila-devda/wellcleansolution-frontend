@@ -4,7 +4,7 @@ import { FiSearch, FiStar, FiShoppingBag, FiEye, FiHeart, FiSliders, FiChevronLe
 import { useAuth } from "../context/AuthContext"
 import { CATALOG_MODE } from "../config"
 import { productsAPI } from "../services/api"
-import { getProductImage, getImageUrl, getCategoryFallbackImage } from "../utils/imageMapper"
+import { getProductImage, getImageUrl } from "../utils/imageMapper"
 
 
 export default function Products({
@@ -279,10 +279,6 @@ export default function Products({
                         <img
                           src={product.image}
                           alt={product.name}
-                          onError={(e) => {
-                            e.target.onerror = null
-                            e.target.src = getCategoryFallbackImage(product.category)
-                          }}
                           className="max-h-40 max-w-full object-contain group-hover:scale-110 transition-transform duration-500"
                         />
 

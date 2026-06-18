@@ -159,10 +159,21 @@ const seedDatabase = async () => {
     await mongoose.connect(process.env.MONGO_URI)
     console.log("Connected to MongoDB for seeding...")
 
-    // Clear existing products and orders
-    await Product.deleteMany({})
-    await Order.deleteMany({})
-    console.log("Cleared existing products and orders from database.")
+    const force = process.argv.includes("--force")
+    const productCount = await Product.countDocuments()
+
+    if (productCount > 0 && !force) {
+      console.log("Products already exist. Seeding aborted to prevent data loss.")
+      console.log("Use --force to overwrite existing data.")
+      await mongoose.connection.close()
+      return
+    }
+
+    if (force) {
+      await Product.deleteMany({})
+      await Order.deleteMany({})
+      console.log("Cleared existing products and orders.")
+    }
 
     // Insert seeded products
     await Product.insertMany(products)
@@ -224,7 +235,6 @@ const seedDatabase = async () => {
 
     const adminExists = await User.findOne({ email: adminEmail })
     if (!adminExists) {
-      const bcrypt = require("bcryptjs")
       // Create admin user: password will be hashed by User save hooks
       await User.create({
         name: "WellClean Admin",
@@ -246,4 +256,16 @@ const seedDatabase = async () => {
   }
 }
 
-seedDatabase()
+if (require.main === module) {
+  const args = process.argv.slice(2)
+  if (args.includes("--run") || args.includes("--force")) {
+    seedDatabase()
+  } else {
+    console.log("To run the seed script, you must explicitly execute it with --run or --force flag.")
+    console.log("Example (Initial Setup):  node server/scripts/seed.js --run")
+    console.log("Example (Force Overwrite): node server/scripts/seed.js --force")
+    process.exit(0)
+  }
+} else {
+  module.exports = seedDatabase
+}

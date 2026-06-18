@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import { FiStar, FiShoppingBag, FiCheck, FiShield, FiHeart, FiPlus, FiMinus, FiInfo, FiLayers, FiList, FiAlertTriangle } from "react-icons/fi"
 import { useAuth } from "../context/AuthContext"
 import { productsAPI } from "../services/api"
-import { getProductImage, getImageUrl, getCategoryFallbackImage } from "../utils/imageMapper"
+import { getProductImage, getImageUrl } from "../utils/imageMapper"
 import { CATALOG_MODE } from "../config"
 
 
@@ -213,10 +213,6 @@ export default function ProductDetails({ onAddToCart }) {
               <img
                 src={galleryImages[activeImageIdx]}
                 alt={product.name}
-                onError={(e) => {
-                  e.target.onerror = null
-                  e.target.src = getCategoryFallbackImage(product.category)
-                }}
                 className="max-h-[300px] md:max-h-[360px] object-contain transition-transform duration-300 ease-out hover:scale-[1.05]"
               />
 
@@ -238,10 +234,6 @@ export default function ProductDetails({ onAddToCart }) {
                     <img
                       src={img}
                       alt={`View angle ${index + 1}`}
-                      onError={(e) => {
-                        e.target.onerror = null
-                        e.target.src = getCategoryFallbackImage(product.category)
-                      }}
                       className="max-h-full max-w-full object-contain"
                     />
 
@@ -531,10 +523,6 @@ export default function ProductDetails({ onAddToCart }) {
                     <img
                       src={p.image}
                       alt={p.name}
-                      onError={(e) => {
-                        e.target.onerror = null
-                        e.target.src = getCategoryFallbackImage(p.category)
-                      }}
                       className="max-h-36 max-w-full object-contain group-hover:scale-[1.05] transition-transform duration-500"
                     />
 
